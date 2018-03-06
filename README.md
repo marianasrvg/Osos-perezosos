@@ -8,4 +8,4 @@ Instalar
   
   
  Ejecutar en directorio back-end:
-	* npm install -g typescript
+* npm install -g typescript
