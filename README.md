@@ -2,9 +2,9 @@
 Próximo proyecto de Diseño de Software
 
 Instalar:
-  0. Android Studio
-  0. Node.js
-  0. Npm
+  *Android Studio
+  *Node.js
+  *Npm
   
   
  Ejecutar:
