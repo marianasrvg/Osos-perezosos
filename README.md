@@ -7,5 +7,5 @@ Instalar:
   0. Npm
   
   
- Ejecutar 
+ Ejecutar:
   npm install -g typescript
