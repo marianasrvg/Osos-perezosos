@@ -1,3 +1,6 @@
+# Project Specific Ignores
+app/*
+
 # Created by https://www.gitignore.io/api/node,visualstudiocode
 
 ### Node ###
