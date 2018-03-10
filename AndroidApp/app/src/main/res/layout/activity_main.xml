@@ -1,29 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mx.iteso.focusfocus.ActivityMain">
+    tools:context="mx.iteso.focusfocus.ActivityMain"
+     >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Do your hw bitch"
-        android:textColor="@color/colorAccent"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--<include>-->
+<!--</include>-->
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nueva Actividad"
-        android:onClick="onClick"
-        tools:layout_editor_absoluteX="135dp"
-        tools:layout_editor_absoluteY="312dp" />
+<android.support.design.widget.BottomNavigationView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
-</android.support.constraint.ConstraintLayout>
+    android:id="@+id/bottomNav"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    app:menu="@menu/bottom_navigation_bar"
+    android:elevation="@dimen/navBarElevation"
+    >
+</android.support.design.widget.BottomNavigationView>
+
+<FrameLayout
+    android:id="@+id/fragmentMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/marginUIComponent"
+    android:layout_above="@id/shadow_view"
+    >
+
+</FrameLayout>
+
+
+<View
+    android:id="@+id/shadow_view"
+    android:layout_above="@id/bottomNav"
+    android:layout_width="match_parent"
+    android:layout_height="2dp"
+    android:layout_gravity="bottom"
+    android:background="@drawable/spacer"
+    />
+
+
+</RelativeLayout>
