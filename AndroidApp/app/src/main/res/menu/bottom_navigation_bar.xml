@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navBActivities"
+        android:title="@string/activityListNav"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:enabled="true"
+        />
+
+    <item
+        android:id="@+id/navBAction"
+        android:title="@string/actionNav"
+        android:icon="@android:drawable/ic_media_play"
+        android:enabled="true"
+        />
+
+    <item
+        android:id="@+id/navBStats"
+        android:title="@string/statsNav"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:enabled="true"
+        />
+</menu>
