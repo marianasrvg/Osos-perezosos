@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.app.Fragment
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,15 @@ import mx.iteso.focusfocus.R
 class FragmentWork : Fragment() {
 
     private var mListener: OnFragmentInteractionListener? = null
+
+    enum class TimerState{
+        Stopped, Paused, Running
+    }
+
+    private lateinit var timer: CountDownTimer
+    private var timerLenghtSecond = 0L
+    private var timerState = TimerState.Stopped
+    private var secondsRemaining = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
