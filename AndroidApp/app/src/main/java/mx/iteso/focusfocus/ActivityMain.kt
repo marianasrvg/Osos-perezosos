@@ -1,6 +1,6 @@
 package mx.iteso.focusfocus
 
-import android.app.FragmentManager
+import android.support.v4.app.FragmentManager
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
@@ -43,7 +43,7 @@ class ActivityMain : AppCompatActivity(),
                 function = { item: MenuItem ->
                     when (item.itemId) {
                         R.id.navBAction -> {
-                            val transaction = fragmentManager.beginTransaction()
+                            val transaction = supportFragmentManager.beginTransaction()
                             Log.d("Fragment", "Next rides")
 
                             val nextFragment = FragmentWork.newInstance()
@@ -54,10 +54,10 @@ class ActivityMain : AppCompatActivity(),
                             return@OnNavigationItemSelectedListener true
                         }
                         R.id.navBActivities -> {
-                            val transaction = fragmentManager.beginTransaction()
+                            val transaction = supportFragmentManager.beginTransaction()
                             Log.d("Fragment", "Next rides")
 
-                            val nextFragment: android.app.Fragment = FragmentTasks.newInstance()
+                            val nextFragment = FragmentTasks.newInstance()
                             nextFragment.setEnterTransition(Fade(1))
                             nextFragment.setExitTransition(Fade(2))
                             transaction.replace(R.id.fragmentMain, nextFragment)
@@ -65,7 +65,7 @@ class ActivityMain : AppCompatActivity(),
                             return@OnNavigationItemSelectedListener true
                         }
                         R.id.navBStats -> {
-                            val transaction = fragmentManager.beginTransaction()
+                            val transaction = supportFragmentManager.beginTransaction()
                             Log.d("Fragment", "Next rides")
 
                             val nextFragment = FragmentStats()
