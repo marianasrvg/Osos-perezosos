@@ -7,15 +7,22 @@ import android.os.Parcelable
  * Created by Maritza on 19/03/2018.
  */
 data class SubTask(var name: String,
-                   var done : Boolean) : Parcelable{
+                   var done : Boolean,
+                   var idSubTask: Int?,
+                   var idTask : Int?) : Parcelable{
+
     constructor(parcel: Parcel) : this(
             parcel.readString(),
-            parcel.readByte() != 0.toByte()) {
+            parcel.readByte() != 0.toByte(),
+            parcel.readValue(Int::class.java.classLoader) as? Int,
+            parcel.readValue(Int::class.java.classLoader) as? Int) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeByte(if (done) 1 else 0)
+        parcel.writeValue(idSubTask)
+        parcel.writeValue(idTask)
     }
 
     override fun describeContents(): Int {
@@ -30,5 +37,9 @@ data class SubTask(var name: String,
         override fun newArray(size: Int): Array<SubTask?> {
             return arrayOfNulls(size)
         }
+    }
+
+    override fun toString(): String {
+        return name
     }
 }

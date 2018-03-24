@@ -11,22 +11,37 @@ data class Task(var title : String,
                 var color : String,
                 var tags : ArrayList<Tag>,
                 var date: Date,
+                var estimatedDate : Date,
                 var priority : Priority,
                 var status : Status,
+                var description : String,
                 var subTask : ArrayList<SubTask>) : Parcelable{
+
+
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
             TODO("tags"),
             TODO("date"),
+            TODO("estimatedDate"),
             TODO("priority"),
             TODO("status"),
+            parcel.readString(),
             TODO("subTask")) {
+    }
+
+    fun subtaskDone() : Int {
+        var dones : Int = 0
+        for(item : SubTask in subTask){
+            if(item.done) dones++
+        }
+        return dones
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(title)
         parcel.writeString(color)
+        parcel.writeString(description)
     }
 
     override fun describeContents(): Int {
@@ -43,12 +58,4 @@ data class Task(var title : String,
         }
     }
 
-
-    fun subtaskDone() : Int {
-        var dones : Int = 0
-        for(item : SubTask in subTask){
-            if(item.done) dones++
-        }
-        return dones
-    }
 }

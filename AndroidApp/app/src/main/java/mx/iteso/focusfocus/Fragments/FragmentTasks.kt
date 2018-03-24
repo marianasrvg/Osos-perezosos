@@ -1,6 +1,7 @@
 package mx.iteso.focusfocus.Fragments
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -9,6 +10,7 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.*
+import mx.iteso.focusfocus.ActivityAddTask
 import mx.iteso.focusfocus.Adapters.AdapterPagerTask
 import mx.iteso.focusfocus.Beans.*
 
@@ -62,51 +64,51 @@ class FragmentTasks : Fragment() {
     fun getData(){
         //Primer array
         var tags : ArrayList<Tag> = ArrayList()
-        tags.add(Tag("Programación", "#A9999A"))
-        tags.add(Tag("Historia", "#0C0B0B"))
+        tags.add(Tag("Programación", "#A9999A", null, null))
+        tags.add(Tag("Historia", "#0C0B0B", null , null))
         var subTask : ArrayList<SubTask> = ArrayList()
-        subTask.add(SubTask("Parte 1", true))
-        subTask.add(SubTask("Documentación", false))
+        subTask.add(SubTask("Parte 1", true, null , null))
+        subTask.add(SubTask("Documentación", false, null , null))
         var array : ArrayList<Task> = ArrayList()
-        array.add(Task("Tarea 1", "#5FA52D", tags, Date(), Priority.LOW, Status.NON_START, subTask))
-        array.add(Task("Tarea 2", "#CE7115", tags, Date(), Priority.LOW, Status.NON_START , subTask))
-        array.add(Task("Tarea 3", "#951A1F", tags, Date(), Priority.LOW, Status.NON_START, subTask ))
+        array.add(Task("Tarea 1", "#5FA52D", tags, Date(), Date(), Priority.LOW, Status.NON_START, "hola", subTask))
+        array.add(Task("Tarea 2", "#CE7115", tags, Date(), Date(), Priority.LOW, Status.NON_START ,"asfda", subTask))
+        array.add(Task("Tarea 3", "#951A1F", tags, Date(), Date(), Priority.LOW, Status.NON_START, "asfdf",subTask ))
         data.put(0, array)
 
         //Segundo array
         var tags2 : ArrayList<Tag> = ArrayList()
-        tags2.add(Tag("Hola", "#3C8C83"))
+        tags2.add(Tag("Hola", "#3C8C83", null , null))
         var subTask2 : ArrayList<SubTask> = ArrayList()
-        subTask2.add(SubTask("Parte 1", true))
-        subTask2.add(SubTask("Documentación", false))
-        subTask2.add(SubTask("Historias de usuario", true))
+        subTask2.add(SubTask("Parte 1", true, null , null))
+        subTask2.add(SubTask("Documentación", false, null , null))
+        subTask2.add(SubTask("Historias de usuario", true, null , null))
         var array2 : ArrayList<Task> = ArrayList()
-        array2.add(Task("Tarea 1", "#6C0505", tags2, Date(), Priority.LOW, Status.IN_PROGRESS, subTask2 ))
-        array2.add(Task("Tarea 2", "#E81B6D", tags, Date(), Priority.LOW, Status.IN_PROGRESS, subTask))
-        array2.add(Task("Tarea 3", "#C9A5B3", tags2, Date(), Priority.LOW, Status.IN_PROGRESS, subTask2 ))
+        array2.add(Task("Tarea 1", "#6C0505", tags2, Date(), Date(), Priority.LOW, Status.IN_PROGRESS, "asdfas", subTask2 ))
+        array2.add(Task("Tarea 2", "#E81B6D", tags, Date(), Date(), Priority.LOW, Status.IN_PROGRESS, "asdfas", subTask))
+        array2.add(Task("Tarea 3", "#C9A5B3", tags2, Date(), Date(), Priority.LOW, Status.IN_PROGRESS, "asdfas", subTask2 ))
         data.put(1, array2)
 
         //Tercer array
         var tags3 : ArrayList<Tag> = ArrayList()
-        tags3.add(Tag("Caca", "#DDCF0F"))
-        tags3.add(Tag("Feo", "#C9A5B3"))
-        tags3.add(Tag("Popo", "#0D3556"))
+        tags3.add(Tag("Caca", "#DDCF0F", null , null))
+        tags3.add(Tag("Feo", "#C9A5B3", null , null))
+        tags3.add(Tag("Popo", "#0D3556", null , null))
         var tags4 : ArrayList<Tag> = ArrayList()
-        tags4.add(Tag("Caca", "#DDCF0F"))
-        tags4.add(Tag("Feo", "#C9A5B3"))
-        tags4.add(Tag("Popo", "#0D3556"))
-        tags4.add(Tag("Bebe", "#DDCF0F"))
+        tags4.add(Tag("Caca", "#DDCF0F", null , null))
+        tags4.add(Tag("Feo", "#C9A5B3", null , null))
+        tags4.add(Tag("Popo", "#0D3556", null , null))
+        tags4.add(Tag("Bebe", "#DDCF0F", null , null))
 
         var subTask3 : ArrayList<SubTask> = ArrayList()
-        subTask3.add(SubTask("Parte 1", true))
-        subTask3.add(SubTask("Documentación", false))
-        subTask3.add(SubTask("Algo más", false))
-        subTask3.add(SubTask("asdfas", false))
+        subTask3.add(SubTask("Parte 1", true, null , null))
+        subTask3.add(SubTask("Documentación", false, null , null))
+        subTask3.add(SubTask("Algo más", false, null , null))
+        subTask3.add(SubTask("asdfas", false, null , null))
         var array3 : ArrayList<Task> = ArrayList()
-        array3.add(Task("Tarea 1", "#532E8A", tags, Date(), Priority.LOW, Status.DONE, subTask3 ))
-        array3.add(Task("Tarea 2", "#1E012C", tags3, Date(), Priority.LOW, Status.DONE, subTask3 ))
-        array3.add(Task("Tarea 3", "#2A9186", tags2, Date(), Priority.LOW, Status.DONE, subTask2 ))
-        array3.add(Task("Tarea 4", "#373A3A", tags4, Date(), Priority.LOW, Status.DONE, subTask2 ))
+        array3.add(Task("Tarea 1", "#532E8A", tags, Date(),Date(), Priority.LOW, Status.DONE, "asdfas", subTask3 ))
+        array3.add(Task("Tarea 2", "#1E012C", tags3, Date(), Date(), Priority.LOW, Status.DONE, "asdfas", subTask3 ))
+        array3.add(Task("Tarea 3", "#2A9186", tags2, Date(), Date(), Priority.LOW, Status.DONE, "asdfas", subTask2 ))
+        array3.add(Task("Tarea 4", "#373A3A", tags4, Date(), Date(), Priority.LOW, Status.DONE, "asdfas", subTask2 ))
         data.put(2, array3)
     }
 
@@ -163,6 +165,8 @@ class FragmentTasks : Fragment() {
         R.id.action_add -> {
             // User chose the "Favorite" action, mark the current item
             // as a favorite...
+            var intent = Intent(activity.baseContext, ActivityAddTask::class.java)
+            activity.startActivity(intent)
             true
         }
 
