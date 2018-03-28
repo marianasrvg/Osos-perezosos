@@ -7,20 +7,18 @@ import android.os.Parcelable
  * Created by Maritza on 19/03/2018.
  */
 data class Tag(var name : String,
-               var color : String,
-               var idTask : Int?,
+               var color : Int,
                var idTag: Int?) : Parcelable {
+
     constructor(parcel: Parcel) : this(
             parcel.readString(),
-            parcel.readString(),
             parcel.readInt(),
-            parcel.readInt()) {
+            parcel.readValue(Int::class.java.classLoader) as? Int) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
-        parcel.writeString(color)
-        parcel.writeValue(idTask)
+        parcel.writeInt(color)
         parcel.writeValue(idTag)
     }
 
@@ -38,7 +36,4 @@ data class Tag(var name : String,
         }
     }
 
-    override fun toString(): String {
-        return name
-    }
 }

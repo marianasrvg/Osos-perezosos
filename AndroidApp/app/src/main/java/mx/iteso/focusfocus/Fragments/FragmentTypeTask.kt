@@ -42,7 +42,7 @@ import mx.iteso.focusfocus.R
         linearLayoutManager = LinearLayoutManager(activity)
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = linearLayoutManager
-        adapter = AdapterRecyclerTask(data)
+        adapter = AdapterRecyclerTask(data, activity)
         recyclerView.adapter = adapter
         return view;
     }

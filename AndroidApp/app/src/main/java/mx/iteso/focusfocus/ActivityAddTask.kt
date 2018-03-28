@@ -95,13 +95,14 @@ class ActivityAddTask : AppCompatActivity() {
                 TimePickerDialog(this@ActivityAddTask,
                         timePicker,
                         estimatedTime.get(Calendar.HOUR),
-                        estimatedTime.get(Calendar.MINUTE), true).show()
+                        estimatedTime.get(Calendar.MINUTE), false).show()
             }
         })
 
         subtask.setOnEditorActionListener(){ v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE ) {
-                if(!v.text.equals("") && !v.text.equals(" ")){
+                if(v.text.equals("") || v.text.equals(" ")){
+                }else{
                     items.add(
                             SubTask(v.text.toString(),
                                     false,
@@ -120,11 +121,10 @@ class ActivityAddTask : AppCompatActivity() {
 
         tag.setOnEditorActionListener() { v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE ) {
-                if(!v.text.equals("") && !v.text.equals(" ")){
+                if(!v.text.equals("")) {
                     tags.add(Tag(
                             v.text.toString(),
-                            colorTitle.toString(),
-                            null,
+                            colorTitle,
                             null))
                     v.setText("")
                     adapterTag.notifyDataSetChanged()
@@ -137,6 +137,7 @@ class ActivityAddTask : AppCompatActivity() {
             }
         }
 
+        circle.backgroundTintList = ColorStateList.valueOf(colorTitle)
         circle.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
                 val context = this@ActivityAddTask
@@ -186,36 +187,44 @@ class ActivityAddTask : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_check -> {
-                var dh = DataBaseHandler.getInstance(this@ActivityAddTask)
-                val controlTask = ControlTask()
-                val controlSubTask = ControlSubTask()
-                val controlTag = ControlTag()
-
-                val taskToast = Task(
-                        titleTask.text.toString(),
-                        String.format("#%08X", 0xFFFFFF and colorTitle),
-                        tags,
-                        cal.time,
-                        estimatedTime.time,
-                        spinner.selectedItem as Priority,
-                        Status.NON_START,
-                        descriptionTask.text.toString(),
-                        items)
-
-                var value : Long = controlTask.addTask(
-                        taskToast,
-                        dh)
-
-                Toast.makeText(this@ActivityAddTask, value.toString(), Toast.LENGTH_LONG).show()
-                for(item in items){
-                    controlSubTask.addSubTask(item, dh, value)
+                if(titleTask.text.toString().equals("") || titleTask.text.toString().equals(" ")){
+                    Toast.makeText(this@ActivityAddTask, "No hay un nombre de tarea", Toast.LENGTH_LONG).show()
                 }
-                for(tag in tags){
-                    controlTag.addTag(tag, dh, value)
+                else{
+                    var dh = DataBaseHandler.getInstance(this@ActivityAddTask)
+                    val controlTask = ControlTask()
+                    val controlSubTask = ControlSubTask()
+                    val controlTag = ControlTag()
+
+                    val taskToast = Task( null,
+                            titleTask.text.toString(),
+                            colorTitle,
+                            tags,
+                            cal.time,
+                            estimatedTime.time,
+                            spinner.selectedItem as Priority,
+                            Status.NON_START,
+                            descriptionTask.text.toString(),
+                            items)
+
+                    var value : Long = controlTask.addTask(
+                            taskToast,
+                            dh)
+
+                    Toast.makeText(this@ActivityAddTask, value.toString(), Toast.LENGTH_LONG).show()
+                    for(item in items){
+                        controlSubTask.addSubTask(item, dh, value)
+                    }
+                    for(tag in tags){
+                        val inserted = controlTag.addTag(tag, dh, value)
+                        controlTag.addTagToTask(inserted, value, dh)
+                    }
+
+                    finish()
                 }
             }
             R.id.action_close -> {
-
+                finish()
             }
         }
         return false

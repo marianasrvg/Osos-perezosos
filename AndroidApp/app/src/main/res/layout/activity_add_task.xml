@@ -30,12 +30,13 @@
                 android:background="@drawable/circle"
                 android:backgroundTint="@color/colorPrimaryDark" />
             <EditText
+                android:maxLength="30"
                 android:id="@+id/titleTask"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="15dp"
-                android:text="@string/title" />
+                android:hint="@string/title" />
         </LinearLayout>
         <LinearLayout
             android:gravity="center"
@@ -98,6 +99,7 @@
                 android:layout_weight=".5"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:maxLength="15"
                     android:layout_margin="5dp"
                     android:id="@+id/subtask"
                     android:drawableStart="@drawable/ic_add_black_24dp"
@@ -121,6 +123,7 @@
                 android:layout_weight=".5"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:maxLength="9"
                     android:layout_margin="5dp"
                     android:id="@+id/tag"
                     android:drawableStart="@drawable/ic_add_black_24dp"

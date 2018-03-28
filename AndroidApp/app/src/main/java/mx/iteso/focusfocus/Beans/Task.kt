@@ -7,20 +7,22 @@ import java.util.*
 /**
  * Created by Maritza on 19/03/2018.
  */
-data class Task(var title : String,
-                var color : String,
+data class Task(var id : Int?,
+                var title : String,
+                var color : Int,
                 var tags : ArrayList<Tag>,
                 var date: Date,
                 var estimatedDate : Date,
                 var priority : Priority,
                 var status : Status,
                 var description : String,
-                var subTask : ArrayList<SubTask>) : Parcelable{
+                var subTask : ArrayList<SubTask>) : Parcelable, Comparable<Task> {
 
 
     constructor(parcel: Parcel) : this(
+            parcel.readValue(Int::class.java.classLoader) as? Int,
             parcel.readString(),
-            parcel.readString(),
+            parcel.readInt(),
             TODO("tags"),
             TODO("date"),
             TODO("estimatedDate"),
@@ -39,8 +41,9 @@ data class Task(var title : String,
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeValue(id)
         parcel.writeString(title)
-        parcel.writeString(color)
+        parcel.writeInt(color)
         parcel.writeString(description)
     }
 
@@ -55,6 +58,15 @@ data class Task(var title : String,
 
         override fun newArray(size: Int): Array<Task?> {
             return arrayOfNulls(size)
+        }
+    }
+
+    override fun compareTo(other: Task): Int {
+        if(other.date == this.date){
+            return other.priority.compareTo(this.priority)
+        }
+        else{
+            return other.date.compareTo(this.date)
         }
     }
 

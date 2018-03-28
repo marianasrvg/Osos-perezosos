@@ -85,10 +85,6 @@ class DataBaseHandler (context : Context,
          */
         @JvmField val KEY_TAG_ID = "idTag"
         /**
-         * Column idTask
-         */
-        @JvmField val KEY_TAG_ID_TASK = "idTask"
-        /**
          * Column name Tag.
          */
         @JvmField val KEY_TAG_NAME = "name"
@@ -97,6 +93,18 @@ class DataBaseHandler (context : Context,
          */
         @JvmField val KEY_TAG_COLOR = "color"
 
+        /**
+         * Table detail tag - task
+         */
+        @JvmField val TABLE_TASK_TAG = "taskTag"
+        /**
+         * Column idTag
+         */
+        @JvmField val KEY_TASK_TAG_ID_TAG = "idTag"
+        /**
+         * Column idTask
+         */
+        @JvmField val KEY_TASK_TAG_ID_TASK = "idTask"
 
         /**
          * Name database.
@@ -122,6 +130,7 @@ class DataBaseHandler (context : Context,
         db.execSQL(createTableTask())
         db.execSQL(createTableTag())
         db.execSQL(createTableSubTask())
+        db.execSQL(createTableTaskTag())
     }
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
@@ -139,7 +148,7 @@ class DataBaseHandler (context : Context,
                         + KEY_TASK_STATUS + " TEXT, "
                         + KEY_TASK_PRIORITY + " TEXT, "
                         + KEY_TASK_DESCRIPTION + " TEXT, "
-                        + KEY_TASK_COLOR + " TEXT)"
+                        + KEY_TASK_COLOR + " INTEGER)"
                 )
         return CREATE_TASK_TABLE
     }
@@ -148,12 +157,21 @@ class DataBaseHandler (context : Context,
         val CREATE_TAG_TABLE = (
                 "CREATE TABLE " + TABLE_TAG + "("
                         + KEY_TAG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                        + KEY_TAG_ID_TASK + " INTEGER,"
                         + KEY_TAG_NAME + " TEXT, "
-                        + KEY_TAG_COLOR + " TEXT, "
-                        + "FOREIGN KEY(" + KEY_TAG_ID_TASK  + ") REFERENCES " + TABLE_TASK + "(" + KEY_TASK_ID + "))"
+                        + KEY_TAG_COLOR + " INTEGER)"
                 )
         return CREATE_TAG_TABLE
+    }
+
+    fun createTableTaskTag() : String {
+        val CREATE_TABLE_TASK_TAG = (
+                "CREATE TABLE " + TABLE_TASK_TAG + "("
+                + KEY_TASK_TAG_ID_TASK + " INTEGER, "
+                + KEY_TASK_TAG_ID_TAG + " INTEGER, "
+                + "FOREIGN KEY(" + KEY_TASK_TAG_ID_TASK  + ") REFERENCES " + TABLE_TASK + "(" + KEY_TASK_ID + ")"
+                + "FOREIGN KEY(" + KEY_TASK_TAG_ID_TAG  + ") REFERENCES " + TABLE_TAG + "(" + KEY_TAG_ID + "))"
+                )
+        return CREATE_TABLE_TASK_TAG
     }
 
     fun createTableSubTask(): String {
