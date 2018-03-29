@@ -18,8 +18,7 @@ data class Task(
         var status: Status,
         var description: String,
         var subTask: ArrayList<SubTask>
-): Parcelable, Comparable<Task> {
-
+) : Parcelable, Comparable<Task> {
 
     constructor(parcel: Parcel) : this(
             parcel.readValue(Int::class.java.classLoader) as? Int,
@@ -69,5 +68,4 @@ data class Task(
             return other.date.compareTo(this.date)
         }
     }
-
 }

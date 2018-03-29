@@ -11,7 +11,7 @@ data class SubTask(
         var done: Boolean,
         var idSubTask: Int?,
         var idTask: Int?
-): Parcelable {
+) : Parcelable {
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),

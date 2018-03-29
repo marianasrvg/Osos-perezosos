@@ -37,19 +37,15 @@ class FragmentTasks : Fragment() {
     private lateinit var pagerAdapter: AdapterPagerTask
     private lateinit var toolbar: Toolbar
     private lateinit var tabLayout: TabLayout
-    private var data : HashMap<Int, ArrayList<Task>> = HashMap()
-    private lateinit var compatActivity : AppCompatActivity
+    private var data: HashMap<Int, ArrayList<Task>> = HashMap()
+    private lateinit var compatActivity: AppCompatActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_fragment_tasks, container, false)
         viewPager = view.findViewById(R.id.viewPager)

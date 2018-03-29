@@ -34,8 +34,8 @@ class ControlSubTask {
                 DataBaseHandler.KEY_SUBTASK_DONE + ", " +
                 DataBaseHandler.KEY_SUBTASK_ID + ", " +
                 DataBaseHandler.KEY_SUBTASK_ID_TASK + " FROM " +
-                DataBaseHandler.TABLE_SUBTASK  + " WHERE " +
-                DataBaseHandler.KEY_SUBTASK_ID_TASK + " = " + id )
+                DataBaseHandler.TABLE_SUBTASK + " WHERE " +
+                DataBaseHandler.KEY_SUBTASK_ID_TASK + " = " + id)
         val db = dh.getReadableDatabase()
         val cursor = db.rawQuery(selectQuery, null)
         while (cursor.moveToNext()) {

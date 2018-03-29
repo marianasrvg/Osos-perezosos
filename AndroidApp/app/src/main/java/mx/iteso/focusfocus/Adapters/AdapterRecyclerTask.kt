@@ -2,16 +2,19 @@ package mx.iteso.focusfocus.Adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
-import android.opengl.Visibility
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.activity_add_task.*
-import kotlinx.android.synthetic.main.item_task.view.*
+import kotlinx.android.synthetic.main.item_task.view.done
+import kotlinx.android.synthetic.main.item_task.view.tag_one
+import kotlinx.android.synthetic.main.item_task.view.tag_two
+import kotlinx.android.synthetic.main.item_task.view.tag_three
+import kotlinx.android.synthetic.main.item_task.view.tag_four
+import kotlinx.android.synthetic.main.item_task.view.subtasks
+import kotlinx.android.synthetic.main.item_task.view.circle
+import kotlinx.android.synthetic.main.item_task.view.title
+import kotlinx.android.synthetic.main.item_task.view.date
 import mx.iteso.focusfocus.Beans.Status
 import mx.iteso.focusfocus.Beans.Task
 import mx.iteso.focusfocus.Database.ControlTask
@@ -19,7 +22,7 @@ import mx.iteso.focusfocus.Database.DataBaseHandler
 import mx.iteso.focusfocus.R
 import mx.iteso.focusfocus.inflate
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 /**
  * Created by Maritza on 19/03/2018.
@@ -27,7 +30,7 @@ import java.util.*
 class AdapterRecyclerTask(
         private val task: ArrayList<Task>,
         var context: Context
-    ): RecyclerView.Adapter<AdapterRecyclerTask.TaskHolder>() {
+): RecyclerView.Adapter<AdapterRecyclerTask.TaskHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterRecyclerTask.TaskHolder {
         val inflatedView = parent.inflate(R.layout.item_task, false)
@@ -53,8 +56,7 @@ class AdapterRecyclerTask(
         }
     }
 
-    class TaskHolder(v: View, val context: Context):
-            RecyclerView.ViewHolder(v), View.OnClickListener {
+    class TaskHolder(v: View, val context: Context): RecyclerView.ViewHolder(v), View.OnClickListener {
 
         override fun onClick(p0: View?) {
             Log.d("RecyclerView", "CLICK!")
@@ -125,4 +127,3 @@ class AdapterRecyclerTask(
         }
     }
 }
-

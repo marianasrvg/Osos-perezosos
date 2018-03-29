@@ -7,10 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper
 /**
  * Created by Maritza on 20/03/2018.
  */
-class DataBaseHandler (
+class DataBaseHandler(
         context: Context,
-        name: String ?,
-        factory: SQLiteDatabase.CursorFactory ?,
+        name: String?,
+        factory: SQLiteDatabase.CursorFactory?,
         version: Int) :
         SQLiteOpenHelper(
                 context,
@@ -117,7 +117,7 @@ class DataBaseHandler (
          */
         private val DATABASE_VERSION = 1
 
-        private var dataBaseHandler : DataBaseHandler ? = null
+        private var dataBaseHandler: DataBaseHandler? = null
 
         fun getInstance(context: Context): DataBaseHandler {
             if (dataBaseHandler == null) {
@@ -126,7 +126,6 @@ class DataBaseHandler (
             return dataBaseHandler as DataBaseHandler
         }
     }
-
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(createTableTask())
@@ -138,7 +137,6 @@ class DataBaseHandler (
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
 
     fun createTableTask(): String {
         val CREATE_TASK_TABLE = (
@@ -170,8 +168,8 @@ class DataBaseHandler (
                 "CREATE TABLE " + TABLE_TASK_TAG + "(" +
                         KEY_TASK_TAG_ID_TASK + " INTEGER, " +
                         KEY_TASK_TAG_ID_TAG + " INTEGER, " +
-                        "FOREIGN KEY(" + KEY_TASK_TAG_ID_TASK  + ") REFERENCES " + TABLE_TASK + "(" + KEY_TASK_ID + ")" +
-                        "FOREIGN KEY(" + KEY_TASK_TAG_ID_TAG  + ") REFERENCES " + TABLE_TAG + "(" + KEY_TAG_ID + "))"
+                        "FOREIGN KEY(" + KEY_TASK_TAG_ID_TASK + ") REFERENCES " + TABLE_TASK + "(" + KEY_TASK_ID + ")" +
+                        "FOREIGN KEY(" + KEY_TASK_TAG_ID_TAG + ") REFERENCES " + TABLE_TAG + "(" + KEY_TAG_ID + "))"
                 )
         return CREATE_TABLE_TASK_TAG
     }
@@ -183,7 +181,7 @@ class DataBaseHandler (
                         KEY_SUBTASK_ID_TASK + " INTEGER," +
                         KEY_SUBTASK_NAME + " TEXT," +
                         KEY_SUBTASK_DONE + " INTEGER," +
-                        "FOREIGN KEY(" + KEY_SUBTASK_ID_TASK  + ") REFERENCES " + TABLE_TASK + "(" + KEY_TASK_ID + "))"
+                        "FOREIGN KEY(" + KEY_SUBTASK_ID_TASK + ") REFERENCES " + TABLE_TASK + "(" + KEY_TASK_ID + "))"
                 )
         return CREATE_SUBTASK_TABLE
     }

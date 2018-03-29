@@ -8,7 +8,6 @@ import mx.iteso.focusfocus.Beans.SubTask
 import java.util.Date
 import kotlin.collections.ArrayList
 
-
 /**
  * Created by Maritza on 21/03/2018.
  */

@@ -54,7 +54,7 @@ class ControlTag {
         return tags
     }
 
-    fun addTagToTask(idTag: Long, idTask: Long, dh: DataBaseHandler) : Long {
+    fun addTagToTask(idTag: Long, idTask: Long, dh: DataBaseHandler): Long {
         var inserted: Long = 0
         var db = dh.writableDatabase
         var values = ContentValues()
