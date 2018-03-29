@@ -2,21 +2,23 @@ package mx.iteso.focusfocus.Beans
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.util.*
+import java.util.Date
 
 /**
  * Created by Maritza on 19/03/2018.
  */
-data class Task(var id : Int?,
-                var title : String,
-                var color : Int,
-                var tags : ArrayList<Tag>,
-                var date: Date,
-                var estimatedDate : Date,
-                var priority : Priority,
-                var status : Status,
-                var description : String,
-                var subTask : ArrayList<SubTask>) : Parcelable, Comparable<Task> {
+data class Task(
+        var id: Int?,
+        var title: String,
+        var color: Int,
+        var tags: ArrayList<Tag>,
+        var date: Date,
+        var estimatedDate: Date,
+        var priority: Priority,
+        var status: Status,
+        var description: String,
+        var subTask: ArrayList<SubTask>
+): Parcelable, Comparable<Task> {
 
 
     constructor(parcel: Parcel) : this(
@@ -31,11 +33,10 @@ data class Task(var id : Int?,
             parcel.readString(),
             TODO("subTask")) {
     }
-
-    fun subtaskDone() : Int {
-        var dones : Int = 0
-        for(item : SubTask in subTask){
-            if(item.done) dones++
+    fun subtaskDone(): Int {
+        var dones: Int = 0
+        for (item: SubTask in subTask) {
+            if (item.done) dones++
         }
         return dones
     }
@@ -62,10 +63,9 @@ data class Task(var id : Int?,
     }
 
     override fun compareTo(other: Task): Int {
-        if(other.date == this.date){
+        if (other.date == this.date) {
             return other.priority.compareTo(this.priority)
-        }
-        else{
+        } else {
             return other.date.compareTo(this.date)
         }
     }

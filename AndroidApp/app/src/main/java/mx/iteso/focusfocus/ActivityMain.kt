@@ -1,7 +1,5 @@
 package mx.iteso.focusfocus
 
-import android.support.v4.app.FragmentManager
-import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -9,7 +7,6 @@ import android.support.design.widget.BottomNavigationView
 import android.transition.Fade
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Button
 import kotlinx.android.synthetic.main.activity_main.*
 import mx.iteso.focusfocus.Fragments.FragmentStats
 import mx.iteso.focusfocus.Fragments.FragmentTasks
@@ -18,7 +15,7 @@ import mx.iteso.focusfocus.Fragments.FragmentWork
 class ActivityMain : AppCompatActivity(),
         FragmentWork.OnFragmentInteractionListener,
         FragmentTasks.OnFragmentInteractionListener,
-        FragmentStats.OnFragmentInteractionListener{
+        FragmentStats.OnFragmentInteractionListener {
 
     override fun onFragmentInteraction(uri: Uri) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

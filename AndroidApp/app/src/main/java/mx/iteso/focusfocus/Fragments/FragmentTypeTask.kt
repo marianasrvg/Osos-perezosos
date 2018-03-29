@@ -20,12 +20,11 @@ import mx.iteso.focusfocus.R
  * Use the [FragmentTypeTask.newInstance] factory method to
  * create an instance of this fragment.
  */
- class FragmentTypeTask:Fragment() {
-
+ class FragmentTypeTask: Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var recyclerView : RecyclerView
-    private lateinit var adapter : AdapterRecyclerTask
-    private var data : ArrayList<Task> = ArrayList()
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: AdapterRecyclerTask
+    private var data: ArrayList<Task> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +33,11 @@ import mx.iteso.focusfocus.R
         }
     }
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_type_task, container, false)
         linearLayoutManager = LinearLayoutManager(activity)
@@ -44,14 +45,12 @@ import mx.iteso.focusfocus.R
         recyclerView.layoutManager = linearLayoutManager
         adapter = AdapterRecyclerTask(data, activity)
         recyclerView.adapter = adapter
-        return view;
+        return view
     }
-
 
     companion object {
         private val ARG_PARAM1 = "DATA"
 
-        // TODO: Rename and change types and number of parameters
         fun newInstance(task: ArrayList<Task>): FragmentTypeTask {
             val fragment = FragmentTypeTask()
             val args = Bundle()
@@ -60,4 +59,4 @@ import mx.iteso.focusfocus.R
             return fragment
         }
     }
-}// Required empty public constructor
+} // Required empty public constructor

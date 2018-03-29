@@ -7,11 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper
 /**
  * Created by Maritza on 20/03/2018.
  */
-class DataBaseHandler (context : Context,
-                       name : String ?,
-                       factory : SQLiteDatabase.CursorFactory ?,
-                       version : Int) :
-        SQLiteOpenHelper(context,
+class DataBaseHandler (
+        context: Context,
+        name: String ?,
+        factory: SQLiteDatabase.CursorFactory ?,
+        version: Int) :
+        SQLiteOpenHelper(
+                context,
                 DATABASE_NAME,
                 factory,
                 DATABASE_VERSION) {
@@ -140,51 +142,49 @@ class DataBaseHandler (context : Context,
 
     fun createTableTask(): String {
         val CREATE_TASK_TABLE = (
-                "CREATE TABLE " + TABLE_TASK + "("
-                        + KEY_TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                        + KEY_TASK_TITLE + " TEXT, "
-                        + KEY_TASK_DATE + " INTEGER, "
-                        + KEY_TASK_ESTIMATED_TIME + " INTEGER,"
-                        + KEY_TASK_STATUS + " TEXT, "
-                        + KEY_TASK_PRIORITY + " TEXT, "
-                        + KEY_TASK_DESCRIPTION + " TEXT, "
-                        + KEY_TASK_COLOR + " INTEGER)"
+                "CREATE TABLE " + TABLE_TASK + "(" +
+                        KEY_TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        KEY_TASK_TITLE + " TEXT, " +
+                        KEY_TASK_DATE + " INTEGER, " +
+                        KEY_TASK_ESTIMATED_TIME + " INTEGER," +
+                        KEY_TASK_STATUS + " TEXT, " +
+                        KEY_TASK_PRIORITY + " TEXT, " +
+                        KEY_TASK_DESCRIPTION + " TEXT, " +
+                        KEY_TASK_COLOR + " INTEGER)"
                 )
         return CREATE_TASK_TABLE
     }
 
     fun createTableTag(): String {
         val CREATE_TAG_TABLE = (
-                "CREATE TABLE " + TABLE_TAG + "("
-                        + KEY_TAG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                        + KEY_TAG_NAME + " TEXT, "
-                        + KEY_TAG_COLOR + " INTEGER)"
+                "CREATE TABLE " + TABLE_TAG + "(" +
+                        KEY_TAG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        KEY_TAG_NAME + " TEXT, " +
+                        KEY_TAG_COLOR + " INTEGER)"
                 )
         return CREATE_TAG_TABLE
     }
 
-    fun createTableTaskTag() : String {
+    fun createTableTaskTag(): String {
         val CREATE_TABLE_TASK_TAG = (
-                "CREATE TABLE " + TABLE_TASK_TAG + "("
-                + KEY_TASK_TAG_ID_TASK + " INTEGER, "
-                + KEY_TASK_TAG_ID_TAG + " INTEGER, "
-                + "FOREIGN KEY(" + KEY_TASK_TAG_ID_TASK  + ") REFERENCES " + TABLE_TASK + "(" + KEY_TASK_ID + ")"
-                + "FOREIGN KEY(" + KEY_TASK_TAG_ID_TAG  + ") REFERENCES " + TABLE_TAG + "(" + KEY_TAG_ID + "))"
+                "CREATE TABLE " + TABLE_TASK_TAG + "(" +
+                        KEY_TASK_TAG_ID_TASK + " INTEGER, " +
+                        KEY_TASK_TAG_ID_TAG + " INTEGER, " +
+                        "FOREIGN KEY(" + KEY_TASK_TAG_ID_TASK  + ") REFERENCES " + TABLE_TASK + "(" + KEY_TASK_ID + ")" +
+                        "FOREIGN KEY(" + KEY_TASK_TAG_ID_TAG  + ") REFERENCES " + TABLE_TAG + "(" + KEY_TAG_ID + "))"
                 )
         return CREATE_TABLE_TASK_TAG
     }
 
     fun createTableSubTask(): String {
         val CREATE_SUBTASK_TABLE = (
-                "CREATE TABLE " + TABLE_SUBTASK + "("
-                        + KEY_SUBTASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                        + KEY_SUBTASK_ID_TASK + " INTEGER,"
-                        + KEY_SUBTASK_NAME + " TEXT,"
-                        + KEY_SUBTASK_DONE + " INTEGER,"
-                        + "FOREIGN KEY(" + KEY_SUBTASK_ID_TASK  + ") REFERENCES " + TABLE_TASK + "(" + KEY_TASK_ID + "))"
-
+                "CREATE TABLE " + TABLE_SUBTASK + "(" +
+                        KEY_SUBTASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        KEY_SUBTASK_ID_TASK + " INTEGER," +
+                        KEY_SUBTASK_NAME + " TEXT," +
+                        KEY_SUBTASK_DONE + " INTEGER," +
+                        "FOREIGN KEY(" + KEY_SUBTASK_ID_TASK  + ") REFERENCES " + TABLE_TASK + "(" + KEY_TASK_ID + "))"
                 )
         return CREATE_SUBTASK_TABLE
     }
-
 }

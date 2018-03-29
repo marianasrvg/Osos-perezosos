@@ -5,7 +5,7 @@ import android.content.ContentValues
 import mx.iteso.focusfocus.Beans.Priority
 import mx.iteso.focusfocus.Beans.Status
 import mx.iteso.focusfocus.Beans.SubTask
-import java.util.*
+import java.util.Date
 import kotlin.collections.ArrayList
 
 
@@ -14,8 +14,7 @@ import kotlin.collections.ArrayList
  */
 class ControlTask {
 
-
-    fun addTask(task : Task, dh : DataBaseHandler): Long {
+    fun addTask(task: Task, dh: DataBaseHandler): Long {
         var inserted: Long = 0
         var db = dh.writableDatabase
         var values = ContentValues()
@@ -37,24 +36,24 @@ class ControlTask {
         }
 
         db = null
-        return inserted;
+        return inserted
     }
 
-    fun getTaskByStatus(status : Status, dh: DataBaseHandler) : ArrayList<Task> {
-        val list = ArrayList<Task>();
-        val selectQuery = ("SELECT " + DataBaseHandler.KEY_TASK_ID + ","
-                    + DataBaseHandler.KEY_TASK_TITLE + ", "
-                    + DataBaseHandler.KEY_TASK_COLOR + ", "
-                    + DataBaseHandler.KEY_TASK_DATE + ", "
-                    + DataBaseHandler.KEY_TASK_ESTIMATED_TIME + ", "
-                    + DataBaseHandler.KEY_TASK_PRIORITY + ", "
-                    + DataBaseHandler.KEY_TASK_STATUS + ", "
-                    + DataBaseHandler.KEY_TASK_DESCRIPTION + " FROM "
-                    + DataBaseHandler.TABLE_TASK + " WHERE "
-                    + DataBaseHandler.KEY_TASK_STATUS + " = '"
-                    + status.name + "'")
-        val db = dh.getReadableDatabase();
-        val cursor = db.rawQuery(selectQuery, null);
+    fun getTaskByStatus(status: Status, dh: DataBaseHandler): ArrayList<Task> {
+        val list = ArrayList<Task>()
+        val selectQuery = ("SELECT " + DataBaseHandler.KEY_TASK_ID + "," +
+                DataBaseHandler.KEY_TASK_TITLE + ", " +
+                DataBaseHandler.KEY_TASK_COLOR + ", " +
+                DataBaseHandler.KEY_TASK_DATE + ", " +
+                DataBaseHandler.KEY_TASK_ESTIMATED_TIME + ", " +
+                DataBaseHandler.KEY_TASK_PRIORITY + ", " +
+                DataBaseHandler.KEY_TASK_STATUS + ", " +
+                DataBaseHandler.KEY_TASK_DESCRIPTION + " FROM " +
+                DataBaseHandler.TABLE_TASK + " WHERE " +
+                DataBaseHandler.KEY_TASK_STATUS + " = '" +
+                status.name + "'")
+        val db = dh.getReadableDatabase()
+        val cursor = db.rawQuery(selectQuery, null)
         while (cursor.moveToNext()) {
             val date = Date()
             val estimatedate = Date()
@@ -75,13 +74,13 @@ class ControlTask {
         }
         try {
             cursor.close()
-            db.close();
-        } catch (e : Exception ) {}
+            db.close()
+        } catch (e: Exception ) {}
 
-        return list;
+        return list
     }
 
-    fun updateState(status : Status, id : Int?, dh: DataBaseHandler) : Int {
+    fun updateState(status: Status, id: Int?, dh: DataBaseHandler): Int {
         val inserted: Long = 0
         var db = dh.writableDatabase
         val values = ContentValues()
@@ -89,7 +88,7 @@ class ControlTask {
         values.put(DataBaseHandler.KEY_TASK_STATUS, status.name)
         val count = db!!.update(DataBaseHandler.TABLE_TASK, values,
                 DataBaseHandler.KEY_TASK_ID + " = ?",
-                Array<String>(1) { id.toString()})
+                Array<String>(1) { id.toString() })
         try {
             db.close()
         } catch (e: Exception) {

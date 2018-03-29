@@ -1,7 +1,6 @@
 package mx.iteso.focusfocus.Database
 
 import android.content.ContentValues
-import mx.iteso.focusfocus.Beans.SubTask
 import mx.iteso.focusfocus.Beans.Tag
 
 /**
@@ -9,7 +8,7 @@ import mx.iteso.focusfocus.Beans.Tag
  */
 class ControlTag {
 
-    fun addTag(tag : Tag, dh : DataBaseHandler, idTask : Long): Long {
+    fun addTag(tag: Tag, dh: DataBaseHandler): Long {
         var inserted: Long = 0
         var db = dh.writableDatabase
         var values = ContentValues()
@@ -24,22 +23,22 @@ class ControlTag {
         } catch (e: Exception) {
         }
         db = null
-        return inserted;
+        return inserted
     }
 
-    fun getTagByIdTask (id : Int ?, dh: DataBaseHandler) : ArrayList<Tag> {
+    fun getTagByIdTask (id: Int ?, dh: DataBaseHandler): ArrayList<Tag> {
         val tags = ArrayList<Tag>()
 
-        val selectQuery = ("SELECT T." + DataBaseHandler.KEY_TAG_ID + ", T."
-                + DataBaseHandler.KEY_TAG_NAME + ", T."
-                + DataBaseHandler.KEY_TAG_COLOR + " FROM "
-                + DataBaseHandler.TABLE_TAG + " T , "
-                + DataBaseHandler.TABLE_TASK_TAG + " TT WHERE TT."
-                + DataBaseHandler.KEY_TASK_TAG_ID_TASK + " = "
-                + id + " AND TT." + DataBaseHandler.KEY_TASK_TAG_ID_TAG + " = T."
-                + DataBaseHandler.KEY_TAG_ID)
-        val db = dh.getReadableDatabase();
-        val cursor = db.rawQuery(selectQuery, null);
+        val selectQuery = ("SELECT T." + DataBaseHandler.KEY_TAG_ID + ", T." +
+                DataBaseHandler.KEY_TAG_NAME + ", T." +
+                DataBaseHandler.KEY_TAG_COLOR + " FROM " +
+                DataBaseHandler.TABLE_TAG + " T , " +
+                DataBaseHandler.TABLE_TASK_TAG + " TT WHERE TT." +
+                DataBaseHandler.KEY_TASK_TAG_ID_TASK + " = " +
+                id + " AND TT." + DataBaseHandler.KEY_TASK_TAG_ID_TAG + " = T." +
+                DataBaseHandler.KEY_TAG_ID)
+        val db = dh.getReadableDatabase()
+        val cursor = db.rawQuery(selectQuery, null)
         while (cursor.moveToNext()) {
             val tag = Tag(
                     cursor.getString(1),
@@ -50,12 +49,12 @@ class ControlTag {
         try {
             cursor.close()
             db.close()
-        } catch (e : Exception ) {
+        } catch (e: Exception ) {
         }
         return tags
     }
 
-    fun addTagToTask(idTag : Long, idTask : Long, dh: DataBaseHandler) : Long {
+    fun addTagToTask(idTag: Long, idTask: Long, dh: DataBaseHandler) : Long {
         var inserted: Long = 0
         var db = dh.writableDatabase
         var values = ContentValues()

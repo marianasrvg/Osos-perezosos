@@ -1,18 +1,15 @@
 package mx.iteso.focusfocus
 
 import android.os.Bundle
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
-
 import kotlinx.android.synthetic.main.activity_add_task.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,7 +17,6 @@ import kotlin.collections.ArrayList
 import android.support.v4.content.ContextCompat
 import android.content.DialogInterface
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.MenuItem
 import android.widget.TimePicker
 import android.widget.Toast
@@ -49,23 +45,25 @@ class ActivityAddTask : AppCompatActivity() {
         setContentView(R.layout.activity_add_task)
         setSupportActionBar(toolbar)
 
-        var adapterList = ArrayAdapter(this,
+        val adapterList = ArrayAdapter (this,
                 android.R.layout.simple_list_item_1,
-                items)
+                items )
 
         list_item.adapter = adapterList
 
-        var adapterTag = ArrayAdapter( this,
+        val adapterTag = ArrayAdapter ( this,
                 android.R.layout.simple_list_item_1,
-                tags)
+                tags )
         list_tag.adapter = adapterTag
 
-        val adapterSpinner = ArrayAdapter(this, android.R.layout.simple_spinner_item, Priority.values())
+        val adapterSpinner = ArrayAdapter (this, android.R.layout.simple_spinner_item, Priority.values() )
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapterSpinner
 
-        val dataPicker = object : DatePickerDialog.OnDateSetListener{
-            override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int,
+        val dataPicker = object : DatePickerDialog.OnDateSetListener {
+            override fun onDateSet(view: DatePicker,
+                                   year: Int,
+                                   monthOfYear: Int,
                                    dayOfMonth: Int) {
                 cal.set(Calendar.YEAR, year)
                 cal.set(Calendar.MONTH, monthOfYear)
@@ -82,14 +80,14 @@ class ActivityAddTask : AppCompatActivity() {
                         cal.get(Calendar.DAY_OF_MONTH)).show()
             }
         })
-        var timePicker = object : TimePickerDialog.OnTimeSetListener{
+        var timePicker = object : TimePickerDialog.OnTimeSetListener {
             override fun onTimeSet(p0: TimePicker?, selectHour: Int, selectMinute: Int) {
                 estimatedTime.set(Calendar.HOUR, selectHour)
                 estimatedTime.set(Calendar.MINUTE, selectMinute)
                 updateTimeInView()
             }
         }
-        time.setOnClickListener(object : View.OnClickListener{
+        time.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
                 var mTime = Calendar.getInstance()
                 TimePickerDialog(this@ActivityAddTask,
@@ -99,12 +97,12 @@ class ActivityAddTask : AppCompatActivity() {
             }
         })
 
-        subtask.setOnEditorActionListener(){ v, actionId, event ->
+        subtask.setOnEditorActionListener() { v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE ) {
-                if(v.text.equals("") || v.text.equals(" ")){
-                }else{
-                    items.add(
-                            SubTask(v.text.toString(),
+                if (v.text.equals("") || v.text.equals(" ")) {
+                }
+                else {
+                    items.add( SubTask(v.text.toString(),
                                     false,
                                     null,
                                     null))
@@ -120,7 +118,7 @@ class ActivityAddTask : AppCompatActivity() {
         }
 
         tag.setOnEditorActionListener() { v, actionId, event ->
-            if(actionId == EditorInfo.IME_ACTION_DONE ) {
+            if (actionId == EditorInfo.IME_ACTION_DONE ) {
                 if(!v.text.equals("")) {
                     tags.add(Tag(
                             v.text.toString(),
@@ -138,7 +136,7 @@ class ActivityAddTask : AppCompatActivity() {
         }
 
         circle.backgroundTintList = ColorStateList.valueOf(colorTitle)
-        circle.setOnClickListener(object : View.OnClickListener{
+        circle.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
                 val context = this@ActivityAddTask
 
@@ -187,10 +185,10 @@ class ActivityAddTask : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.action_check -> {
-                if(titleTask.text.toString().equals("") || titleTask.text.toString().equals(" ")){
+                if (titleTask.text.toString().equals("") || titleTask.text.toString().equals(" ")) {
                     Toast.makeText(this@ActivityAddTask, "No hay un nombre de tarea", Toast.LENGTH_LONG).show()
                 }
-                else{
+                else {
                     var dh = DataBaseHandler.getInstance(this@ActivityAddTask)
                     val controlTask = ControlTask()
                     val controlSubTask = ControlSubTask()
@@ -207,15 +205,15 @@ class ActivityAddTask : AppCompatActivity() {
                             descriptionTask.text.toString(),
                             items)
 
-                    var value : Long = controlTask.addTask(
+                    var value:Long = controlTask.addTask (
                             taskToast,
                             dh)
 
                     Toast.makeText(this@ActivityAddTask, value.toString(), Toast.LENGTH_LONG).show()
-                    for(item in items){
+                    for (item in items) {
                         controlSubTask.addSubTask(item, dh, value)
                     }
-                    for(tag in tags){
+                    for (tag in tags) {
                         val inserted = controlTag.addTag(tag, dh, value)
                         controlTag.addTagToTask(inserted, value, dh)
                     }

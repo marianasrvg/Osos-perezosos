@@ -9,13 +9,16 @@ import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import mx.iteso.focusfocus.ActivityAddTask
 import mx.iteso.focusfocus.Adapters.AdapterPagerTask
-import mx.iteso.focusfocus.Beans.*
-
+import mx.iteso.focusfocus.Beans.Task
 import mx.iteso.focusfocus.R
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -32,32 +35,33 @@ class FragmentTasks : Fragment() {
     private var mListener: OnFragmentInteractionListener? = null
     private lateinit var viewPager: ViewPager
     private lateinit var pagerAdapter: AdapterPagerTask
-    private lateinit var toolbar : Toolbar
+    private lateinit var toolbar: Toolbar
     private lateinit var tabLayout: TabLayout
     private var data : HashMap<Int, ArrayList<Task>> = HashMap()
-
     private lateinit var compatActivity : AppCompatActivity
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_fragment_tasks, container, false)
         viewPager = view.findViewById(R.id.viewPager)
         tabLayout = view.findViewById(R.id.tabLayout)
         tabLayout.setupWithViewPager(viewPager)
         toolbar = view.findViewById(R.id.toolbar)
-        compatActivity  = activity as AppCompatActivity
+        compatActivity = activity as AppCompatActivity
         compatActivity.setSupportActionBar(toolbar)
         pagerAdapter = AdapterPagerTask(activity.supportFragmentManager, activity)
         viewPager.adapter = pagerAdapter
         viewPager.currentItem = pagerAdapter.count / 2
-        return view;
+        return view
     }
 
         override fun onAttach(context: Context) {
@@ -97,12 +101,10 @@ class FragmentTasks : Fragment() {
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         compatActivity.menuInflater.inflate(R.menu.menu_task, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_settings -> {
@@ -124,4 +126,4 @@ class FragmentTasks : Fragment() {
             super.onOptionsItemSelected(item)
         }
     }
-}// Required empty public constructor
+} // Required empty public constructor

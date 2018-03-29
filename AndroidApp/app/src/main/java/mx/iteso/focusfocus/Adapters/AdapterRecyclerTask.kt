@@ -26,8 +26,8 @@ import java.util.*
  */
 class AdapterRecyclerTask(
         private val task: ArrayList<Task>,
-        var context : Context) :
-        RecyclerView.Adapter<AdapterRecyclerTask.TaskHolder>() {
+        var context: Context
+    ): RecyclerView.Adapter<AdapterRecyclerTask.TaskHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterRecyclerTask.TaskHolder {
         val inflatedView = parent.inflate(R.layout.item_task, false)
@@ -45,17 +45,17 @@ class AdapterRecyclerTask(
             task.removeAt(position)
             val controlTask = ControlTask()
             val dh = DataBaseHandler.getInstance(this.context)
-            if(isChecked) {
+            if (isChecked) {
                 controlTask.updateState(Status.DONE, itemTask.id, dh)
             } else controlTask.updateState(Status.NON_START, itemTask.id, dh)
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, task.size);
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, task.size)
         }
     }
 
-    class TaskHolder(v : View,
-                     val context: Context) :
-                    RecyclerView.ViewHolder(v), View.OnClickListener{
+    class TaskHolder(v: View, val context: Context):
+            RecyclerView.ViewHolder(v), View.OnClickListener {
+
         override fun onClick(p0: View?) {
             Log.d("RecyclerView", "CLICK!")
         }
@@ -63,7 +63,7 @@ class AdapterRecyclerTask(
         private var view: View = v
         private var task: Task? = null
 
-        init{
+        init {
             v.setOnClickListener(this)
         }
 
@@ -75,7 +75,7 @@ class AdapterRecyclerTask(
         fun bindHolder(task: Task) {
             this.task = task
             view.title.text = task.title
-            when(task.tags.size){
+            when (task.tags.size) {
                 4 -> {
                     view.tag_four.text = task.tags[3].name
                     view.tag_four.visibility = View.VISIBLE
@@ -115,16 +115,14 @@ class AdapterRecyclerTask(
                     view.tag_one.setBackgroundColor(task.tags[0].color)
                 }
             }
-            if(task.status == Status.DONE) view.done.isChecked = true
+            if (task.status == Status.DONE) view.done.isChecked = true
             else view.done.isChecked = false
             view.subtasks.text = task.subtaskDone().toString() + "/" + task.subTask.size
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
             view.date.text = sdf.format(task.date.getTime())
             view.circle.backgroundTintList = ColorStateList.valueOf(task.color)
-
         }
     }
-
 }
 
