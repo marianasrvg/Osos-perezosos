@@ -214,7 +214,7 @@ class ActivityAddTask : AppCompatActivity() {
                         controlSubTask.addSubTask(item, dh, value)
                     }
                     for (tag in tags) {
-                        val inserted = controlTag.addTag(tag, dh, value)
+                        val inserted = controlTag.addTag(tag, dh)
                         controlTag.addTagToTask(inserted, value, dh)
                     }
 
