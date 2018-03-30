@@ -14,7 +14,7 @@ import mx.iteso.focusfocus.Fragments.FragmentTypeTask
 /**
  * Created by Maritza on 19/03/2018.
  */
-class AdapterPagerTask(fragmentManager : FragmentManager, private val context: Context):
+class AdapterPagerTask(fragmentManager: FragmentManager, private val context: Context) :
         FragmentStatePagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment {

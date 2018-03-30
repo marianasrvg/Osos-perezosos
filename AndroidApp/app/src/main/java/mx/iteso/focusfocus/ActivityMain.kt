@@ -80,5 +80,4 @@ class ActivityMain : AppCompatActivity(),
         bottomNav.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         navigationBar.selectedItemId = R.id.navBAction
     }
-
 }

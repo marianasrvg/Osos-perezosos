@@ -7,10 +7,10 @@ import android.os.Parcelable
  * Created by Maritza on 19/03/2018.
  */
 data class SubTask(
-        var name: String,
-        var done: Boolean,
-        var idSubTask: Int?,
-        var idTask: Int?
+    var name: String,
+    var done: Boolean,
+    var idSubTask: Int?,
+    var idTask: Int?
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(

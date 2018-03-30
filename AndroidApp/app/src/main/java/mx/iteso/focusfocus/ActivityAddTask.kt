@@ -46,7 +46,6 @@ import mx.iteso.focusfocus.Database.ControlTag
 import mx.iteso.focusfocus.Database.ControlTask
 import mx.iteso.focusfocus.Database.DataBaseHandler
 
-
 class ActivityAddTask : AppCompatActivity() {
 
     private var cal = Calendar.getInstance()
@@ -74,10 +73,12 @@ class ActivityAddTask : AppCompatActivity() {
         spinner.adapter = adapterSpinner
 
         val dataPicker = object : DatePickerDialog.OnDateSetListener {
-            override fun onDateSet(view: DatePicker,
-                                   year: Int,
-                                   monthOfYear: Int,
-                                   dayOfMonth: Int) {
+            override fun onDateSet(
+                view: DatePicker,
+                year: Int,
+                monthOfYear: Int,
+                dayOfMonth: Int
+            ) {
                 cal.set(Calendar.YEAR, year)
                 cal.set(Calendar.MONTH, monthOfYear)
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -108,7 +109,7 @@ class ActivityAddTask : AppCompatActivity() {
                         estimatedTime.get(Calendar.HOUR),
                         estimatedTime.get(Calendar.MINUTE), false).show()
             }
-        } )
+        })
         subtask.setOnEditorActionListener() { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE ) {
                 if (v.text.equals("") || v.text.equals(" ")) {
@@ -159,10 +160,10 @@ class ActivityAddTask : AppCompatActivity() {
                         .setOnColorChangedListener(OnColorChangedListener { selectedColor ->
                             // Handle on color change
                             colorTitle = selectedColor
-                        } )
+                        })
                         .setOnColorSelectedListener(OnColorSelectedListener { selectedColor -> colorTitle = selectedColor })
                         .setPositiveButton("ok", ColorPickerClickListener { dialog, selectedColor, allColors ->
-                            circle.backgroundTintList = ColorStateList.valueOf(colorTitle) } )
+                            circle.backgroundTintList = ColorStateList.valueOf(colorTitle) })
                         .setNegativeButton("cancel", DialogInterface.OnClickListener { dialog, which -> })
                         .showColorEdit(true)
                         .setColorEditTextColor(ContextCompat.getColor(this@ActivityAddTask, android.R.color.holo_blue_bright))

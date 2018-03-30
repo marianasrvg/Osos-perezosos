@@ -1,7 +1,5 @@
 package mx.iteso.focusfocus.Fragments
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -9,7 +7,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_type_task.*
 import mx.iteso.focusfocus.Adapters.AdapterRecyclerTask
 import mx.iteso.focusfocus.Beans.Task
 
@@ -20,7 +17,7 @@ import mx.iteso.focusfocus.R
  * Use the [FragmentTypeTask.newInstance] factory method to
  * create an instance of this fragment.
  */
- class FragmentTypeTask: Fragment() {
+class FragmentTypeTask : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AdapterRecyclerTask
@@ -34,9 +31,9 @@ import mx.iteso.focusfocus.R
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_type_task, container, false)

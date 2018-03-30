@@ -8,11 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper
  * Created by Maritza on 20/03/2018.
  */
 class DataBaseHandler(
-        context: Context,
-        name: String?,
-        factory: SQLiteDatabase.CursorFactory?,
-        version: Int) :
-        SQLiteOpenHelper(
+    context: Context,
+    name: String?,
+    factory: SQLiteDatabase.CursorFactory?,
+    version: Int
+) : SQLiteOpenHelper(
                 context,
                 DATABASE_NAME,
                 factory,

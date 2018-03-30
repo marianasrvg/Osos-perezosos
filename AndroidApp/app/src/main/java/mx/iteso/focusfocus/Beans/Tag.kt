@@ -7,9 +7,9 @@ import android.os.Parcelable
  * Created by Maritza on 19/03/2018.
  */
 data class Tag(
-        var name: String,
-        var color: Int,
-        var idTag: Int?
+    var name: String,
+    var color: Int,
+    var idTag: Int?
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(

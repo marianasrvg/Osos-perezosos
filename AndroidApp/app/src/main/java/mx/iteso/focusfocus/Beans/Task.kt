@@ -8,16 +8,16 @@ import java.util.Date
  * Created by Maritza on 19/03/2018.
  */
 data class Task(
-        var id: Int?,
-        var title: String,
-        var color: Int,
-        var tags: ArrayList<Tag>,
-        var date: Date,
-        var estimatedDate: Date,
-        var priority: Priority,
-        var status: Status,
-        var description: String,
-        var subTask: ArrayList<SubTask>
+    var id: Int?,
+    var title: String,
+    var color: Int,
+    var tags: ArrayList<Tag>,
+    var date: Date,
+    var estimatedDate: Date,
+    var priority: Priority,
+    var status: Status,
+    var description: String,
+    var subTask: ArrayList<SubTask>
 ) : Parcelable, Comparable<Task> {
 
     constructor(parcel: Parcel) : this(

@@ -28,9 +28,9 @@ import java.util.Locale
  * Created by Maritza on 19/03/2018.
  */
 class AdapterRecyclerTask(
-        private val task: ArrayList<Task>,
-        var context: Context
-): RecyclerView.Adapter<AdapterRecyclerTask.TaskHolder>() {
+    private val task: ArrayList<Task>,
+    var context: Context
+) : RecyclerView.Adapter<AdapterRecyclerTask.TaskHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterRecyclerTask.TaskHolder {
         val inflatedView = parent.inflate(R.layout.item_task, false)
@@ -56,7 +56,7 @@ class AdapterRecyclerTask(
         }
     }
 
-    class TaskHolder(v: View, val context: Context): RecyclerView.ViewHolder(v), View.OnClickListener {
+    class TaskHolder(v: View, val context: Context) : RecyclerView.ViewHolder(v), View.OnClickListener {
 
         override fun onClick(p0: View?) {
             Log.d("RecyclerView", "CLICK!")
