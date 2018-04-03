@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -22,15 +23,6 @@ android {
     }
 }
 
-repositories {
-    jcenter()
-}
-
-configurations {
-    ktlint
-}
-
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -46,6 +38,16 @@ dependencies {
     implementation "com.android.support:design:26.1.0"
     compile 'me.zhanghai.android.materialprogressbar:library:1.4.2'
 
+
+}
+
+
+repositories {
+    jcenter()
+}
+
+configurations {
+    ktlint
 }
 
 dependencies {
@@ -57,16 +59,20 @@ dependencies {
 
 task ktlint(type: JavaExec, group: "verification") {
     description = "Check Kotlin code style."
-    main = "com.github.shyiko.ktlint.Main"
     classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
     args "src/**/*.kt"
-    args "--reporter=checkstyle,output=${buildDir}/ktlint.xml"
+    // to generate report in checkstyle format prepend following args:
+    // "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/ktlint.xml"
+    // see https://github.com/shyiko/ktlint#usage for more
 }
+
 check.dependsOn ktlint
 
 task ktlintFormat(type: JavaExec, group: "formatting") {
     description = "Fix Kotlin code style deviations."
-    main = "com.github.shyiko.ktlint.Main"
     classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
     args "-F", "src/**/*.kt"
 }
+
