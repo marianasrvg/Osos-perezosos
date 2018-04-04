@@ -97,13 +97,13 @@ class ControlTask {
         return count
     }
 
-    fun removeTask(task: Task, dh: DataBaseHandler):Int {
-        val deleted:Long = 0;
+    fun removeTask(task: Task, dh: DataBaseHandler): Int {
+        val deleted: Long = 0
         var db = dh.writableDatabase
         val values = ContentValues()
         val cout = db!!.delete(DataBaseHandler.TABLE_TASK,
                 DataBaseHandler.KEY_TASK_ID + " = ?",
-                Array<String>(1){task.id.toString()})
+                Array<String>(1) { task.id.toString() })
 
         try {
             db.close()
@@ -111,10 +111,10 @@ class ControlTask {
         }
 
         db = null
-        return cout;
+        return cout
     }
 
-    fun updateTask(id: Int, task:Task, dh:DataBaseHandler):Long{
+    fun updateTask(id: Int, task: Task, dh: DataBaseHandler): Long {
         var db = dh.writableDatabase
         val values = ContentValues()
 
@@ -126,9 +126,9 @@ class ControlTask {
         values.put(DataBaseHandler.KEY_TASK_DESCRIPTION, task.description)
         values.put(DataBaseHandler.KEY_TASK_COLOR, task.color)
 
-        val count = db.update(DataBaseHandler.TABLE_TASK,values,
+        val count = db.update(DataBaseHandler.TABLE_TASK, values,
                 DataBaseHandler.KEY_TASK_ID + " = ?",
-                Array<String>(1){id.toString()})
+                Array<String>(1) { id.toString() })
 
         try {
             db.close()

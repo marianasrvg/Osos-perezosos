@@ -19,7 +19,6 @@ import android.view.View
 import android.view.ViewGroup
 import mx.iteso.focusfocus.ActivityAddTask
 import mx.iteso.focusfocus.Adapters.AdapterPagerTask
-import mx.iteso.focusfocus.Beans.Status
 import mx.iteso.focusfocus.Beans.Task
 import mx.iteso.focusfocus.R
 import kotlin.collections.ArrayList
@@ -76,7 +75,6 @@ class FragmentTasks : Fragment(), PopupMenu.OnMenuItemClickListener {
         super.onStart()
         //viewPager.currentItem = 0;
         //viewPager.adapter = pagerAdapter
-
     }
 
     override fun onDetach() {
@@ -142,7 +140,7 @@ class FragmentTasks : Fragment(), PopupMenu.OnMenuItemClickListener {
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean =
-        when(item.itemId){
+        when (item.itemId) {
             R.id.menu_task_popup_Edit -> {
                 Log.d("EDIT", "long click ")
                 true
@@ -153,7 +151,7 @@ class FragmentTasks : Fragment(), PopupMenu.OnMenuItemClickListener {
                 true
             }
 
-            else->{
+            else -> {
                 false
             }
         }

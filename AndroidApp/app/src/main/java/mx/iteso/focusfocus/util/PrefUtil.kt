@@ -1,16 +1,14 @@
 package mx.iteso.focusfocus.util
 
 import android.content.Context
-import android.preference.Preference
 import android.preference.PreferenceManager
 import mx.iteso.focusfocus.Fragments.FragmentWork
-
 
 class PrefUtil {
     companion object {
 
         fun getTimerLength(context: Context): Int {
-            return 25;
+            return 25
         }
 
         private const val PREVIOUS_TIMER_LENGTH_SECONDS_ID = "mx.iteso.focusfocus.timer.previous_timer_length_seconds"

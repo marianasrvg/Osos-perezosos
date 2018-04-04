@@ -1,48 +1,34 @@
 package mx.iteso.focusfocus
 
-import android.os.Bundle
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import kotlinx.android.synthetic.main.activity_add_task.titleTask
-import kotlinx.android.synthetic.main.activity_add_task.list_tag
-import kotlinx.android.synthetic.main.activity_add_task.list_item
-import kotlinx.android.synthetic.main.activity_add_task.circle
-import kotlinx.android.synthetic.main.activity_add_task.date
-import kotlinx.android.synthetic.main.activity_add_task.descriptionTask
-import kotlinx.android.synthetic.main.activity_add_task.spinner
-import kotlinx.android.synthetic.main.activity_add_task.subtask
-import kotlinx.android.synthetic.main.activity_add_task.time
-import kotlinx.android.synthetic.main.activity_add_task.toolbar
-import kotlinx.android.synthetic.main.activity_add_task.tag
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-import kotlin.collections.ArrayList
-import android.support.v4.content.ContextCompat
 import android.content.DialogInterface
 import android.content.res.ColorStateList
+import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import com.flask.colorpicker.builder.ColorPickerClickListener
-import com.flask.colorpicker.OnColorSelectedListener
-import com.flask.colorpicker.OnColorChangedListener
 import com.flask.colorpicker.ColorPickerView
+import com.flask.colorpicker.OnColorChangedListener
+import com.flask.colorpicker.OnColorSelectedListener
+import com.flask.colorpicker.builder.ColorPickerClickListener
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
-import mx.iteso.focusfocus.Beans.Task
-import mx.iteso.focusfocus.Beans.SubTask
-import mx.iteso.focusfocus.Beans.Tag
-import mx.iteso.focusfocus.Beans.Priority
-import mx.iteso.focusfocus.Beans.Status
+import kotlinx.android.synthetic.main.activity_add_task.*
+import mx.iteso.focusfocus.Beans.*
 import mx.iteso.focusfocus.Database.ControlSubTask
 import mx.iteso.focusfocus.Database.ControlTag
 import mx.iteso.focusfocus.Database.ControlTask
 import mx.iteso.focusfocus.Database.DataBaseHandler
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import kotlin.collections.ArrayList
 
 class ActivityAddTask : AppCompatActivity() {
 
@@ -51,8 +37,8 @@ class ActivityAddTask : AppCompatActivity() {
     private var colorTitle: Int = R.color.colorPrimary
     private var tags: ArrayList<Tag> = ArrayList()
     private var estimatedTime = Calendar.getInstance()
-    private var isEdit = false;
-    private var taskToLoad: Task? = null;
+    private var isEdit = false
+    private var taskToLoad: Task? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +53,7 @@ class ActivityAddTask : AppCompatActivity() {
 
         //val adapterTag = ArrayAdapter (this, android.R.layout.simple_list_item_1, tags )
 
-        val adapterTag = object : ArrayAdapter<Tag>(this, android.R.layout.simple_list_item_1, tags){
+        val adapterTag = object : ArrayAdapter<Tag>(this, android.R.layout.simple_list_item_1, tags) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
                 val v = super.getView(position, convertView, parent) as TextView
                 v.setBackgroundColor(tags[position].color)
@@ -208,11 +194,11 @@ class ActivityAddTask : AppCompatActivity() {
             }
         })
 
-        if(intent != null && intent.extras != null)
+        if (intent != null && intent.extras != null)
             taskToLoad = intent.extras["TASK"] as Task
-        if(taskToLoad != null){
+        if (taskToLoad != null) {
             isEdit = true
-            loadTaskData(taskToLoad!!);
+            loadTaskData(taskToLoad!!)
         }
     }
 
@@ -223,8 +209,7 @@ class ActivityAddTask : AppCompatActivity() {
         estimatedTime.time = taskToLoad.estimatedDate
         descriptionTask.setText(taskToLoad.description)
         taskToLoad.subTask.forEach {
-            items.add(it);
-
+            items.add(it)
         }
         (list_item.adapter as ArrayAdapter<SubTask>).notifyDataSetChanged()
         taskToLoad.tags.forEach {
@@ -281,8 +266,8 @@ class ActivityAddTask : AppCompatActivity() {
                     descriptionTask.text.toString(),
                     items)
 
-            var value:Long
-            if(!isEdit) {
+            var value: Long
+            if (!isEdit) {
                 value = controlTask.addTask(
                         taskToast,
                         dh)
@@ -293,8 +278,8 @@ class ActivityAddTask : AppCompatActivity() {
                     val inserted = controlTag.addTag(tag, dh)
                     controlTag.addTagToTask(inserted, value, dh)
                 }
-            }else{
-                value = controlTask.updateTask(taskToLoad!!.id!!,taskToast,dh)
+            } else {
+                value = controlTask.updateTask(taskToLoad!!.id!!, taskToast, dh)
             }
 
             Toast.makeText(this@ActivityAddTask, value.toString(), Toast.LENGTH_LONG).show()

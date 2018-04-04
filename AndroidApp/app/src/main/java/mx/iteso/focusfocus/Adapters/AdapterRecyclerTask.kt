@@ -28,7 +28,6 @@ import java.util.Locale
 import android.view.MenuItem
 import mx.iteso.focusfocus.ActivityAddTask
 
-
 /**
  * Created by Maritza on 19/03/2018.
  */
@@ -61,12 +60,12 @@ class AdapterRecyclerTask(
         }
     }
 
-    fun removeTaskWithId(id: Task?){
+    fun removeTaskWithId(id: Task?) {
         task.remove(id)
         var dh = DataBaseHandler.getInstance(context)
         val controlTask = ControlTask()
         if (id != null) {
-            controlTask.removeTask(id,dh)
+            controlTask.removeTask(id, dh)
         }
         notifyDataSetChanged()
     }
@@ -79,7 +78,7 @@ class AdapterRecyclerTask(
         notifyDataSetChanged()
     }
 
-    class TaskHolder(v: View, val context: Context, adapter:AdapterRecyclerTask) : RecyclerView.ViewHolder(v), View.OnClickListener {
+    class TaskHolder(v: View, val context: Context, adapter: AdapterRecyclerTask) : RecyclerView.ViewHolder(v), View.OnClickListener {
 
         override fun onClick(p0: View?) {
             Log.d("RecyclerView", "CLICK!")
@@ -87,7 +86,7 @@ class AdapterRecyclerTask(
 
         private var view: View = v
         private var task: Task? = null
-        private var mAdapter:AdapterRecyclerTask = adapter
+        private var mAdapter: AdapterRecyclerTask = adapter
 
         init {
             v.setOnClickListener(this)
