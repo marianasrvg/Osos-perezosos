@@ -8,8 +8,6 @@ import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.DatePicker
 import kotlinx.android.synthetic.main.activity_add_task.titleTask
 import kotlinx.android.synthetic.main.activity_add_task.list_tag
 import kotlinx.android.synthetic.main.activity_add_task.list_item
@@ -29,8 +27,8 @@ import android.support.v4.content.ContextCompat
 import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.view.MenuItem
-import android.widget.TimePicker
-import android.widget.Toast
+import android.view.ViewGroup
+import android.widget.*
 import com.flask.colorpicker.builder.ColorPickerClickListener
 import com.flask.colorpicker.OnColorSelectedListener
 import com.flask.colorpicker.OnColorChangedListener
@@ -53,6 +51,8 @@ class ActivityAddTask : AppCompatActivity() {
     private var colorTitle: Int = R.color.colorPrimary
     private var tags: ArrayList<Tag> = ArrayList()
     private var estimatedTime = Calendar.getInstance()
+    private var isEdit = false;
+    private var taskToLoad: Task? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +65,43 @@ class ActivityAddTask : AppCompatActivity() {
 
         list_item.adapter = adapterList
 
-        val adapterTag = ArrayAdapter (this, android.R.layout.simple_list_item_1, tags )
+        //val adapterTag = ArrayAdapter (this, android.R.layout.simple_list_item_1, tags )
+
+        val adapterTag = object : ArrayAdapter<Tag>(this, android.R.layout.simple_list_item_1, tags){
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                val v = super.getView(position, convertView, parent) as TextView
+                v.setBackgroundColor(tags[position].color)
+                v.text = tags[position].name
+                v.setOnClickListener(
+                        View.OnClickListener {
+                            val context = this@ActivityAddTask
+                            var newColor = 0
+                            ColorPickerDialogBuilder
+                                    .with(context)
+                                    .setTitle("Color")
+                                    .initialColor(colorTitle)
+                                    .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                                    .density(12)
+                                    .setOnColorChangedListener(OnColorChangedListener { selectedColor ->
+                                        // Handle on color change
+                                        newColor = selectedColor
+                                    })
+                                    .setOnColorSelectedListener(OnColorSelectedListener { selectedColor -> newColor = selectedColor })
+                                    .setPositiveButton("ok", ColorPickerClickListener { dialog, selectedColor, allColors ->
+                                        tags[position].color = newColor
+                                        notifyDataSetChanged()
+                                    })
+                                    .setNegativeButton("cancel", DialogInterface.OnClickListener { dialog, which -> })
+                                    .showColorEdit(true)
+                                    .setColorEditTextColor(ContextCompat.getColor(this@ActivityAddTask, android.R.color.holo_blue_bright))
+                                    .build()
+                                    .show()
+                        }
+                )
+                return v
+            }
+        }
+
         list_tag.adapter = adapterTag
 
         val adapterSpinner = ArrayAdapter (this, android.R.layout.simple_spinner_item, Priority.values() )
@@ -171,6 +207,30 @@ class ActivityAddTask : AppCompatActivity() {
                         .show()
             }
         })
+
+        if(intent != null && intent.extras != null)
+            taskToLoad = intent.extras["TASK"] as Task
+        if(taskToLoad != null){
+            isEdit = true
+            loadTaskData(taskToLoad!!);
+        }
+    }
+
+    private fun loadTaskData(taskToLoad: Task) {
+        titleTask.setText(taskToLoad.title)
+        spinner.setSelection(taskToLoad.priority.ordinal)
+        cal.time = taskToLoad.date
+        estimatedTime.time = taskToLoad.estimatedDate
+        descriptionTask.setText(taskToLoad.description)
+        taskToLoad.subTask.forEach {
+            items.add(it);
+
+        }
+        (list_item.adapter as ArrayAdapter<SubTask>).notifyDataSetChanged()
+        taskToLoad.tags.forEach {
+            tags.add(it)
+        }
+        (list_tag.adapter as ArrayAdapter<SubTask>).notifyDataSetChanged()
     }
 
     private fun updateDateInView() {
@@ -193,42 +253,53 @@ class ActivityAddTask : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_check -> {
-                if (titleTask.text.toString().equals("") || titleTask.text.toString().equals(" ")) {
-                    Toast.makeText(this@ActivityAddTask, "No hay un nombre de tarea", Toast.LENGTH_LONG).show()
-                } else {
-                    var dh = DataBaseHandler.getInstance(this@ActivityAddTask)
-                    val controlTask = ControlTask()
-                    val controlSubTask = ControlSubTask()
-                    val controlTag = ControlTag()
-                    val taskToast = Task( null,
-                            titleTask.text.toString(),
-                            colorTitle,
-                            tags,
-                            cal.time,
-                            estimatedTime.time,
-                            spinner.selectedItem as Priority,
-                            Status.NON_START,
-                            descriptionTask.text.toString(),
-                            items)
-                    var value: Long = controlTask.addTask (
-                            taskToast,
-                            dh)
-                    Toast.makeText(this@ActivityAddTask, value.toString(), Toast.LENGTH_LONG).show()
-                    for (item in items) {
-                        controlSubTask.addSubTask(item, dh, value)
-                    }
-                    for (tag in tags) {
-                        val inserted = controlTag.addTag(tag, dh)
-                        controlTag.addTagToTask(inserted, value, dh)
-                    }
-
-                    finish()
-                }
+                tryToWriteTask()
             }
             R.id.action_close -> {
                 finish()
             }
         }
         return false
+    }
+
+    private fun tryToWriteTask() {
+        if (titleTask.text.toString().equals("") || titleTask.text.toString().equals(" ")) {
+            Toast.makeText(this@ActivityAddTask, "No hay un nombre de tarea", Toast.LENGTH_LONG).show()
+        } else {
+            var dh = DataBaseHandler.getInstance(this@ActivityAddTask)
+            val controlTask = ControlTask()
+            val controlSubTask = ControlSubTask()
+            val controlTag = ControlTag()
+            val taskToast = Task(null,
+                    titleTask.text.toString(),
+                    colorTitle,
+                    tags,
+                    cal.time,
+                    estimatedTime.time,
+                    spinner.selectedItem as Priority,
+                    Status.NON_START,
+                    descriptionTask.text.toString(),
+                    items)
+
+            var value:Long
+            if(!isEdit) {
+                value = controlTask.addTask(
+                        taskToast,
+                        dh)
+                for (item in items) {
+                    controlSubTask.addSubTask(item, dh, value)
+                }
+                for (tag in tags) {
+                    val inserted = controlTag.addTag(tag, dh)
+                    controlTag.addTagToTask(inserted, value, dh)
+                }
+            }else{
+                value = controlTask.updateTask(taskToLoad!!.id!!,taskToast,dh)
+            }
+
+            Toast.makeText(this@ActivityAddTask, value.toString(), Toast.LENGTH_LONG).show()
+
+            finish()
+        }
     }
 }

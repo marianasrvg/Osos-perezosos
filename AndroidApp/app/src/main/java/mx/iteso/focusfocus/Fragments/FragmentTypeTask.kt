@@ -30,6 +30,12 @@ class FragmentTypeTask : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        recyclerView.adapter = adapter
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
