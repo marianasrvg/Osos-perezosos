@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
+import android.widget.TextView
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.OnColorChangedListener
 import com.flask.colorpicker.OnColorSelectedListener
@@ -27,6 +28,7 @@ import mx.iteso.focusfocus.Beans.Priority
 import mx.iteso.focusfocus.Beans.SubTask
 import mx.iteso.focusfocus.Beans.Tag
 import mx.iteso.focusfocus.Beans.Task
+import mx.iteso.focusfocus.Beans.Status
 import mx.iteso.focusfocus.Database.ControlSubTask
 import mx.iteso.focusfocus.Database.ControlTag
 import mx.iteso.focusfocus.Database.ControlTask
