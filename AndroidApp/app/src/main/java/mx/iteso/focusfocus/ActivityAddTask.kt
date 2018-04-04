@@ -13,14 +13,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.OnColorChangedListener
 import com.flask.colorpicker.OnColorSelectedListener
 import com.flask.colorpicker.builder.ColorPickerClickListener
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
-import kotlinx.android.synthetic.main.activity_add_task.*
-import mx.iteso.focusfocus.Beans.*
+import mx.iteso.focusfocus.Beans.SubTask
+import mx.iteso.focusfocus.Beans.Tag
+import mx.iteso.focusfocus.Beans.Task
 import mx.iteso.focusfocus.Database.ControlSubTask
 import mx.iteso.focusfocus.Database.ControlTag
 import mx.iteso.focusfocus.Database.ControlTask
