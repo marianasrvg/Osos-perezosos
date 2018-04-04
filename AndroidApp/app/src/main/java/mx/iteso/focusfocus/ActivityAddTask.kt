@@ -102,10 +102,10 @@ class ActivityAddTask : AppCompatActivity() {
 
         val dataPicker = object : DatePickerDialog.OnDateSetListener {
             override fun onDateSet(
-                    view: DatePicker,
-                    year: Int,
-                    monthOfYear: Int,
-                    dayOfMonth: Int
+                view: DatePicker,
+                year: Int,
+                monthOfYear: Int,
+                dayOfMonth: Int
             ) {
                 cal.set(Calendar.YEAR, year)
                 cal.set(Calendar.MONTH, monthOfYear)
