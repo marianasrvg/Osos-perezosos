@@ -15,12 +15,15 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
+import android.widget.TimePicker
+import android.widget.Toast
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.OnColorChangedListener
 import com.flask.colorpicker.OnColorSelectedListener
 import com.flask.colorpicker.builder.ColorPickerClickListener
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
 import kotlinx.android.synthetic.main.activity_add_task.*
+import mx.iteso.focusfocus.Beans.Priority
 import mx.iteso.focusfocus.Beans.SubTask
 import mx.iteso.focusfocus.Beans.Tag
 import mx.iteso.focusfocus.Beans.Task
