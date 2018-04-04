@@ -13,11 +13,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.OnColorChangedListener
 import com.flask.colorpicker.OnColorSelectedListener
 import com.flask.colorpicker.builder.ColorPickerClickListener
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
+import kotlinx.android.synthetic.main.activity_add_task.*
 import mx.iteso.focusfocus.Beans.SubTask
 import mx.iteso.focusfocus.Beans.Tag
 import mx.iteso.focusfocus.Beans.Task
@@ -96,10 +99,10 @@ class ActivityAddTask : AppCompatActivity() {
 
         val dataPicker = object : DatePickerDialog.OnDateSetListener {
             override fun onDateSet(
-                view: DatePicker,
-                year: Int,
-                monthOfYear: Int,
-                dayOfMonth: Int
+                    view: DatePicker,
+                    year: Int,
+                    monthOfYear: Int,
+                    dayOfMonth: Int
             ) {
                 cal.set(Calendar.YEAR, year)
                 cal.set(Calendar.MONTH, monthOfYear)
