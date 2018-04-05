@@ -39,6 +39,8 @@ class FragmentWork : Fragment() {
     private lateinit var fab_pause: FloatingActionButton
     private lateinit var fab_stop: FloatingActionButton
 
+    private var timerType = 0
+
     //El tiempo que va a durar se asigna en el return de Util->PrefUtil->getTimerLength()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +75,7 @@ class FragmentWork : Fragment() {
 
         fab_stop.setOnClickListener { v ->
             timer.cancel()
-            onTimerFinished()
+            onStopTimer()
         }
         return view
     }
@@ -120,11 +122,27 @@ class FragmentWork : Fragment() {
 
     private fun onTimerFinished () {
         timerState = TimerState.Stopped
-        setNewTimerLength()
+        if ( timerType == 0 ) {
+            setNewRestTimerLength()
+            timerType = 1
+        } else {
+            setNewTimerLength()
+            timerType = 0
+        }
         content_timer_progress_countdown.progress = 0
         PrefUtil.setSecondsRemaining(timerLengthSeconds, this.context)
         secondsRemaining = timerLengthSeconds
 
+        updateButtons()
+        updateCountdownUI()
+    }
+
+    private fun onStopTimer () { //restart de rest time
+        timerState = TimerState.Stopped
+        setNewTimerLength()
+        content_timer_progress_countdown.progress = 0
+        PrefUtil.setSecondsRemaining(timerLengthSeconds, this.context)
+        secondsRemaining = timerLengthSeconds
         updateButtons()
         updateCountdownUI()
     }
@@ -143,6 +161,12 @@ class FragmentWork : Fragment() {
 
     private fun setNewTimerLength() {
         val lengthInMinutes = PrefUtil.getTimerLength(this.context)
+        timerLengthSeconds = (lengthInMinutes * 60L)
+        content_timer_progress_countdown.max = timerLengthSeconds.toInt()
+    }
+
+    private fun setNewRestTimerLength() {
+        val lengthInMinutes = PrefUtil.getRestTimerLength(this.context)
         timerLengthSeconds = (lengthInMinutes * 60L)
         content_timer_progress_countdown.max = timerLengthSeconds.toInt()
     }

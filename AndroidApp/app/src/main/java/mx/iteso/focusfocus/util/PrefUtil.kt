@@ -11,6 +11,10 @@ class PrefUtil {
             return 25
         }
 
+        fun getRestTimerLength(context: Context): Int {
+            return 5
+        }
+
         private const val PREVIOUS_TIMER_LENGTH_SECONDS_ID = "mx.iteso.focusfocus.timer.previous_timer_length_seconds"
 
         fun getPreviousTimerLengthSeconds (context: Context): Long {
