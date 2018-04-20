@@ -1,15 +1,15 @@
 package mx.iteso.focusfocus
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.app.DatePickerDialog
+import android.app.PendingIntent.getActivity
 import android.app.TimePickerDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
-import android.widget.DatePicker
 import kotlinx.android.synthetic.main.activity_add_task.titleTask
 import kotlinx.android.synthetic.main.activity_add_task.list_tag
 import kotlinx.android.synthetic.main.activity_add_task.list_item
@@ -29,8 +29,7 @@ import android.support.v4.content.ContextCompat
 import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.view.MenuItem
-import android.widget.TimePicker
-import android.widget.Toast
+import android.widget.*
 import com.flask.colorpicker.builder.ColorPickerClickListener
 import com.flask.colorpicker.OnColorSelectedListener
 import com.flask.colorpicker.OnColorChangedListener
@@ -103,11 +102,7 @@ class ActivityAddTask : AppCompatActivity() {
         }
         time.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
-                var mTime = Calendar.getInstance()
-                TimePickerDialog(this@ActivityAddTask,
-                        timePicker,
-                        estimatedTime.get(Calendar.HOUR),
-                        estimatedTime.get(Calendar.MINUTE), false).show()
+                createDialogTime(time)
             }
         })
         subtask.setOnEditorActionListener() { v, actionId, event ->
@@ -230,5 +225,18 @@ class ActivityAddTask : AppCompatActivity() {
             }
         }
         return false
+    }
+
+    fun createDialogTime(tv: TextView) {
+        val builder = AlertDialog.Builder(this@ActivityAddTask)
+        val inflater = this.getLayoutInflater()
+        val v = inflater.inflate(R.layout.dialog_time, null)
+        builder.setView(v)
+        val hour = v.findViewById<NumberPicker>(R.id.dialog_hour)
+        val minute = v.findViewById<NumberPicker>(R.id.dialog_minute)
+        builder.setPositiveButton("ACCEPT", DialogInterface.OnClickListener { dialogInterface, i ->
+            tv.setText(hour.value.toString() + ":" + minute.value.toString())
+        }).setNegativeButton("CANCEL", DialogInterface.OnClickListener { dialogInterface, i -> dialogInterface.dismiss() })
+        builder.create().show()
     }
 }

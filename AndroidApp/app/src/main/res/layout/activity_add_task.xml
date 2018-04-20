@@ -84,6 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
+            android:maxLength="200"
             android:id="@+id/descriptionTask"
             android:layout_margin="5dp"
             android:inputType="textMultiLine"
