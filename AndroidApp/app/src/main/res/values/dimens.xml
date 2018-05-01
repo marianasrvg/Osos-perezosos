@@ -2,4 +2,6 @@
 <resources>
     <dimen name="marginUIComponent">10dp</dimen>
     <dimen name="navBarElevation">8dp</dimen>
+    <dimen name="fab_margin">25dp</dimen>
+
 </resources>

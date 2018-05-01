@@ -8,7 +8,9 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -30,7 +32,7 @@ import kotlin.collections.HashMap
  * Use the [FragmentTasks.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentTasks : Fragment() {
+class FragmentTasks : Fragment(), PopupMenu.OnMenuItemClickListener {
 
     private var mListener: OnFragmentInteractionListener? = null
     private lateinit var viewPager: ViewPager
@@ -67,6 +69,12 @@ class FragmentTasks : Fragment() {
         } else {
             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        //viewPager.currentItem = 0;
+        //viewPager.adapter = pagerAdapter
     }
 
     override fun onDetach() {
@@ -116,10 +124,35 @@ class FragmentTasks : Fragment() {
             true
         }
 
+        R.id.action_add -> {
+            // User chose the "Favorite" action, mark the current item
+            // as a favorite...
+            var intent = Intent(activity.baseContext, ActivityAddTask::class.java)
+            activity.startActivity(intent)
+            true
+        }
+
         else -> {
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
     }
+
+    override fun onMenuItemClick(item: MenuItem): Boolean =
+        when (item.itemId) {
+            R.id.menu_task_popup_Edit -> {
+                Log.d("EDIT", "long click ")
+                true
+            }
+
+            R.id.menu_task_popup_Delete -> {
+                Log.d("Delete", "delete")
+                true
+            }
+
+            else -> {
+                false
+            }
+        }
 } // Required empty public constructor

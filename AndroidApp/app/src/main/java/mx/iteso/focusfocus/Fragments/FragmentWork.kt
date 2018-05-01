@@ -3,12 +3,17 @@ package mx.iteso.focusfocus.Fragments
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.content_timer.*
 
 import mx.iteso.focusfocus.R
+import mx.iteso.focusfocus.util.PrefUtil
 
 /**
  * A simple [Fragment] subclass.
@@ -20,7 +25,23 @@ import mx.iteso.focusfocus.R
  */
 class FragmentWork : Fragment() {
 
+    enum class TimerState {
+        Stopped, Paused, Running
+    }
+
     private var mListener: OnFragmentInteractionListener? = null
+    private lateinit var compatActivity: AppCompatActivity
+    private lateinit var timer: CountDownTimer
+    private var timerLengthSeconds = 0L
+    private var timerState = TimerState.Stopped
+    private var secondsRemaining = 0L
+    private lateinit var fab_play: FloatingActionButton
+    private lateinit var fab_pause: FloatingActionButton
+    private lateinit var fab_stop: FloatingActionButton
+
+    private var timerType = 0
+
+    //El tiempo que va a durar se asigna en el return de Util->PrefUtil->getTimerLength()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +53,158 @@ class FragmentWork : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_work, container, false)
+        val view = inflater.inflate(R.layout.fragment_fragment_work, container, false)
+        compatActivity = activity as AppCompatActivity
+        compatActivity.supportActionBar?.setIcon(R.drawable.ic_timer)
+        compatActivity.supportActionBar?.title = "      Timer"
+        fab_play = view.findViewById(R.id.fragment_work_fab_play)
+        fab_pause = view.findViewById(R.id.fragment_work_fab_pause)
+        fab_stop = view.findViewById(R.id.fragment_work_fab_stop)
+
+        fab_play.setOnClickListener { v ->
+            startTimer()
+            timerState = TimerState.Running
+            updateButtons()
+        }
+
+        fab_pause.setOnClickListener { v ->
+            timer.cancel()
+            timerState = TimerState.Paused
+            updateButtons()
+        }
+
+        fab_stop.setOnClickListener { v ->
+            timer.cancel()
+            onStopTimer()
+        }
+        return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        initTimer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (timerState == TimerState.Running) {
+            timer.cancel()
+        } else if (timerState == TimerState.Paused) {
+            //TODO: show notification
+        }
+
+        PrefUtil.setPreviousTimerLengthSeconds(timerLengthSeconds, this.context)
+        PrefUtil.setSecondsRemaining(secondsRemaining, this.context)
+        PrefUtil.setTimerState(timerState, this.context)
+    }
+
+    private fun initTimer() {
+        timerState = PrefUtil.getTimerState(this.context)
+
+        if (timerState == TimerState.Stopped)
+            setNewTimerLength()
+        else
+            setPreviousTimerLength()
+
+        if (timerState == TimerState.Running ||
+                timerState == TimerState.Paused)
+            secondsRemaining = PrefUtil.getSecondsRemaining(this.context)
+        else
+            secondsRemaining = timerLengthSeconds
+
+        if (timerState == TimerState.Running)
+            startTimer ()
+
+        updateButtons()
+        updateCountdownUI()
+    }
+
+    private fun onTimerFinished () {
+        timerState = TimerState.Stopped
+        if ( timerType == 0 ) {
+            setNewRestTimerLength()
+            timerType = 1
+        } else {
+            setNewTimerLength()
+            timerType = 0
+        }
+        content_timer_progress_countdown.progress = 0
+        PrefUtil.setSecondsRemaining(timerLengthSeconds, this.context)
+        secondsRemaining = timerLengthSeconds
+
+        updateButtons()
+        updateCountdownUI()
+    }
+
+    private fun onStopTimer () { //restart de rest time
+        timerState = TimerState.Stopped
+        setNewTimerLength()
+        content_timer_progress_countdown.progress = 0
+        PrefUtil.setSecondsRemaining(timerLengthSeconds, this.context)
+        secondsRemaining = timerLengthSeconds
+        updateButtons()
+        updateCountdownUI()
+    }
+
+    private fun startTimer() {
+        timerState = TimerState.Running
+        timer = object : CountDownTimer(secondsRemaining * 1000, 1000) {
+            override fun onFinish() = onTimerFinished()
+
+            override fun onTick(millisUntilFinished: Long) {
+                secondsRemaining = millisUntilFinished / 1000
+                updateCountdownUI()
+            }
+        }.start()
+    }
+
+    private fun setNewTimerLength() {
+        val lengthInMinutes = PrefUtil.getTimerLength(this.context)
+        timerLengthSeconds = (lengthInMinutes * 60L)
+        content_timer_progress_countdown.max = timerLengthSeconds.toInt()
+    }
+
+    private fun setNewRestTimerLength() {
+        val lengthInMinutes = PrefUtil.getRestTimerLength(this.context)
+        timerLengthSeconds = (lengthInMinutes * 60L)
+        content_timer_progress_countdown.max = timerLengthSeconds.toInt()
+    }
+
+    private fun setPreviousTimerLength() {
+        timerLengthSeconds = PrefUtil.getPreviousTimerLengthSeconds(this.context)
+        content_timer_progress_countdown.max = timerLengthSeconds.toInt()
+    }
+
+    private fun updateCountdownUI() {
+        val minutesUntilFinished = secondsRemaining / 60
+        val secondsInMinuteUntilFinished = secondsRemaining - minutesUntilFinished * 60
+        val secondsStr = secondsInMinuteUntilFinished.toString()
+        content_timer_text_view_countdown.text = "$minutesUntilFinished:${
+            if (secondsStr.length == 2) secondsStr
+            else "0" + secondsStr
+        }"
+        content_timer_progress_countdown.progress = (timerLengthSeconds - secondsRemaining).toInt()
+    }
+
+    private fun updateButtons () {
+        when (timerState) {
+            TimerState.Running -> {
+                fab_play.isEnabled = false
+                fab_pause.isEnabled = true
+                fab_stop.isEnabled = true
+            }
+            TimerState.Stopped -> {
+                fab_play.isEnabled = true
+                fab_pause.isEnabled = false
+                fab_stop.isEnabled = false
+            }
+            TimerState.Paused -> {
+                fab_play.isEnabled = true
+                fab_pause.isEnabled = false
+                fab_stop.isEnabled = true
+            }
+        }
     }
 
         override fun onAttach(context: Context) {

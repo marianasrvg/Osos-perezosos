@@ -28,7 +28,6 @@
     android:id="@+id/fragmentMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/marginUIComponent"
     android:layout_above="@id/shadow_view"
     >
 

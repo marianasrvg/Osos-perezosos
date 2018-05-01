@@ -11,7 +11,6 @@ data class Tag(
     var color: Int,
     var idTag: Int?
 ) : Parcelable {
-
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readInt(),
