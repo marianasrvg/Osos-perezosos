@@ -75,7 +75,7 @@ class ControlTag {
         return tags
     }
 
-    fun addTagToTask(idTag: Long, idTask: Long, dh: DataBaseHandler): Long {
+    fun addTagToTask(idTag: Int, idTask: Int, dh: DataBaseHandler): Long {
         var inserted: Long = 0
         var db = dh.writableDatabase
         var values = ContentValues()
@@ -93,12 +93,12 @@ class ControlTag {
         return inserted
     }
 
-    fun changeColor(idTag: Long, color : Long,  dh : DataBaseHandler) {
+    fun changeColor(idTag: Int, color : Int,  dh : DataBaseHandler) {
         var db = dh.writableDatabase
         var values = ContentValues()
         values.put(DataBaseHandler.KEY_TAG_COLOR, color)
         db.update(DataBaseHandler.TABLE_TAG, values,
-                "id = ?",
+                DataBaseHandler.KEY_TAG_ID + " = ?",
                 Array<String>(1){idTag.toString()})
 
     }
@@ -135,5 +135,20 @@ class ControlTag {
 
         db = null
         return cout
+    }
+
+    fun removeTagFromTask(idTask : Int, dh : DataBaseHandler) {
+        val deleted : Long = 0
+        var db = dh.writableDatabase
+        val values = ContentValues()
+        val cout = db!!.delete(DataBaseHandler.TABLE_TASK_TAG,
+                DataBaseHandler.KEY_TASK_TAG_ID_TASK + " = ?",
+                Array<String>(1){ idTask.toString()})
+        try {
+            db.close()
+        } catch (e: Exception) {
+        }
+
+        db = null
     }
 }

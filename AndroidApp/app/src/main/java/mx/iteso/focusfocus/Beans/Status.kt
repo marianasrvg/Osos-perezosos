@@ -10,6 +10,7 @@ enum class Status() : Parcelable {
     IN_PROGRESS, DONE, NON_START;
 
     constructor(parcel: Parcel) : this() {
+        parcel.readInt()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

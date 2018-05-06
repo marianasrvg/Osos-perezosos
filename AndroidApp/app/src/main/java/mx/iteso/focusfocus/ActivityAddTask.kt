@@ -133,11 +133,12 @@ class ActivityAddTask : AppCompatActivity(), View.OnClickListener, TextView.OnEd
 
     private fun loadTaskData(taskToLoad: Task) {
         titleTask.setText(taskToLoad.title)
-        spinner.setSelection(taskToLoad.priority.ordinal)
+        circle.backgroundTintList = ColorStateList.valueOf(taskToLoad.color)
+        spinner.setSelection(taskToLoad.priority!!.ordinal)
         cal.time = taskToLoad.date
         estimatedTime.time = taskToLoad.estimatedDate
         descriptionTask.setText(taskToLoad.description)
-        taskToLoad.subTask.forEach {
+        taskToLoad.subTask!!.forEach {
             items.add(it)
         }
         (list_item.adapter as ArrayAdapter<SubTask>).notifyDataSetChanged()
@@ -462,6 +463,9 @@ class ActivityAddTask : AppCompatActivity(), View.OnClickListener, TextView.OnEd
                 .setPositiveButton("ok", ColorPickerClickListener { dialog, selectedColor, allColors ->
                     tag.color = newColor
                     v.setBackgroundColor(tag.color)
+                    var controlTag = ControlTag()
+                    var db = DataBaseHandler.getInstance(this@ActivityAddTask)
+                    controlTag.changeColor(tag.idTag, tag.color, db)
                 })
                 .setNegativeButton("cancel", DialogInterface.OnClickListener { dialog, which -> })
                 .showColorEdit(true)
@@ -478,18 +482,19 @@ class ActivityAddTask : AppCompatActivity(), View.OnClickListener, TextView.OnEd
             val controlTask = ControlTask()
             val controlSubTask = ControlSubTask()
             val controlTag = ControlTag()
+            val priority = if (spinner.selectedItem == null) Priority.HIGH else spinner.selectedItem as Priority
             val taskToast = Task(null,
                     titleTask.text.toString(),
                     circle.backgroundTintList.defaultColor,
                     tags,
                     cal.time,
                     estimatedTime.time,
-                    spinner.selectedItem as Priority,
+                    priority,
                     Status.NON_START,
                     descriptionTask.text.toString(),
                     items)
 
-            var value: Long
+            var value: Int
             if (!isEdit) {
                 value = controlTask.addTask(
                         taskToast,
@@ -498,14 +503,23 @@ class ActivityAddTask : AppCompatActivity(), View.OnClickListener, TextView.OnEd
                     controlSubTask.addSubTask(item, dh, value)
                 }
                 for (tag in tags) {
-                    val inserted = controlTag.addTag(tag, dh)
+                    val inserted = tag.idTag
                     controlTag.addTagToTask(inserted, value, dh)
                 }
             } else {
-                value = controlTask.updateTask(taskToLoad!!.id!!, taskToast, dh)
+                for(tagDel in taskToLoad!!.tags) {
+                    controlTag.removeTagFromTask(taskToLoad!!.id!!, dh)
+                }
+
+                taskToLoad!!.tags = tags
+                controlTask.updateTask(taskToLoad!!.id!!, taskToast, dh)
+
+                for (tag in taskToLoad!!.tags) {
+                    controlTag.addTagToTask(tag.idTag, taskToLoad!!.id!!, dh)
+                }
             }
 
-            Toast.makeText(this@ActivityAddTask, value.toString(), Toast.LENGTH_LONG).show()
+            //Toast.makeText(this@ActivityAddTask, value.toString(), Toast.LENGTH_LONG).show()
 
             finish()
         }
