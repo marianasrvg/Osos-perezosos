@@ -2,14 +2,14 @@ package mx.iteso.focusfocus.Fragments
 
 import android.content.Context
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.Toolbar
+import android.view.*
 import kotlinx.android.synthetic.main.content_timer.*
 
 import mx.iteso.focusfocus.R
@@ -38,11 +38,21 @@ class FragmentWork : Fragment() {
     private lateinit var fab_play: FloatingActionButton
     private lateinit var fab_pause: FloatingActionButton
     private lateinit var fab_stop: FloatingActionButton
+    private lateinit var toolbar: Toolbar
+
+
+    private lateinit var cycle1 : MenuItem
+    private lateinit var cycle2 : MenuItem
+    private lateinit var cycle3 : MenuItem
+    private lateinit var cycle4 : MenuItem
+
+
 
     //El tiempo que va a durar se asigna en el return de Util->PrefUtil->getTimerLength()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -52,13 +62,12 @@ class FragmentWork : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_fragment_work, container, false)
-        compatActivity = activity as AppCompatActivity
-        compatActivity.supportActionBar?.setIcon(R.drawable.ic_timer)
-        compatActivity.supportActionBar?.title = "      Timer"
         fab_play = view.findViewById(R.id.fragment_work_fab_play)
         fab_pause = view.findViewById(R.id.fragment_work_fab_pause)
         fab_stop = view.findViewById(R.id.fragment_work_fab_stop)
-
+        toolbar = view.findViewById(R.id.toolbar_work)
+        compatActivity = activity as AppCompatActivity
+        compatActivity.setSupportActionBar(toolbar)
         fab_play.setOnClickListener { v ->
             startTimer()
             timerState = TimerState.Running
@@ -216,4 +225,12 @@ class FragmentWork : Fragment() {
             return fragment
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        compatActivity.menuInflater.inflate(R.menu.menu_timer_cycle, menu)
+        cycle1 = menu!!.getItem(0)
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
 } // Required empty public constructor
