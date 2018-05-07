@@ -11,6 +11,7 @@ enum class Priority() : Parcelable {
     HIGH, MEDIUM, LOW;
 
     constructor(parcel: Parcel) : this() {
+        parcel.readInt()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

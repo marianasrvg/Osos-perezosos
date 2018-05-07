@@ -175,7 +175,7 @@ class AdapterRecyclerTask(
             }
             if (task.status == Status.DONE) view.done.isChecked = true
             else view.done.isChecked = false
-            view.subtasks.text = task.subtaskDone().toString() + "/" + task.subTask.size
+            view.subtasks.text = task.subtaskDone().toString() + "/" + task.subTask!!.size
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
             view.date.text = sdf.format(task.date.getTime())

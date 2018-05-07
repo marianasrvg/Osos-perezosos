@@ -8,7 +8,7 @@ import mx.iteso.focusfocus.Beans.SubTask
  */
 class ControlSubTask {
 
-    fun addSubTask(subTask: SubTask, dh: DataBaseHandler, idTask: Long): Long {
+    fun addSubTask(subTask: SubTask, dh: DataBaseHandler, idTask: Int): Long {
         var inserted: Long = 0
         var db = dh.writableDatabase
         var values = ContentValues()

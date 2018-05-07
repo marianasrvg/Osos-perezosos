@@ -19,7 +19,23 @@
         <activity android:name=".ActivityButton" />
         <activity
             android:name=".ActivityAddTask"
-            android:label="@string/title_activity_add_task"></activity>
+            android:label="@string/title_activity_add_task" />
+
+        <receiver
+            android:name=".TimerExpiredReciever"
+            android:enabled="false"
+            android:exported="false" />
+        <receiver
+            android:name=".TimerNotificationActionReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="stop"/>
+                <action android:name="pause"/>
+                <action android:name="resume"/>
+                <action android:name="start"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
