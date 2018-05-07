@@ -14,11 +14,12 @@ data class Task(
     var tags: List<Tag>,
     var date: Date,
     var estimatedDate: Date,
-    var priority: Priority,
-    var status: Status,
-    var description: String,
-    var subTask: List<SubTask>
+    var priority: Priority?,
+    var status: Status?,
+    var description: String?,
+    var subTask: List<SubTask>?
 ) : Comparable<Task>, Parcelable {
+
 
     constructor(parcel: Parcel) : this(
             parcel.readValue(Int::class.java.classLoader) as? Int,
@@ -35,7 +36,7 @@ data class Task(
 
     fun subtaskDone(): Int {
         var dones: Int = 0
-        for (item: SubTask in subTask) {
+        for (item: SubTask in this!!.subTask!!) {
             if (item.done) dones++
         }
         return dones
@@ -43,7 +44,7 @@ data class Task(
 
     override fun compareTo(other: Task): Int {
         if (other.date == this.date) {
-            return other.priority.compareTo(this.priority)
+            return other.priority!!.compareTo(this.priority!!)
         } else {
             return other.date.compareTo(this.date)
         }
@@ -75,4 +76,5 @@ data class Task(
             return arrayOfNulls(size)
         }
     }
+
 }

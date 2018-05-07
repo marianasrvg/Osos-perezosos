@@ -9,18 +9,18 @@ import android.os.Parcelable
 data class Tag(
     var name: String,
     var color: Int,
-    var idTag: Int?
+    var idTag: Int
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readInt(),
-            parcel.readValue(Int::class.java.classLoader) as? Int) {
+            parcel.readInt()) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeInt(color)
-        parcel.writeValue(idTag)
+        parcel.writeInt(idTag)
     }
 
     override fun describeContents(): Int {
