@@ -20,6 +20,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="FocusPlus" parent="AppTheme" />
 
 
 </resources>
