@@ -37,8 +37,8 @@ dependencies {
     compile 'com.github.QuadFlask:colorpicker:0.0.13'
     implementation "com.android.support:design:26.1.0"
     compile 'me.zhanghai.android.materialprogressbar:library:1.4.2'
-
-
+    implementation 'com.android.support:preference-v7:26.1.0'
+    compile 'com.pavelsikun:material-seekbar-preference:2.3.0'
 }
 
 
@@ -75,4 +75,8 @@ task ktlintFormat(type: JavaExec, group: "formatting") {
     main = "com.github.shyiko.ktlint.Main"
     args "-F", "src/**/*.kt"
 }
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
+
 

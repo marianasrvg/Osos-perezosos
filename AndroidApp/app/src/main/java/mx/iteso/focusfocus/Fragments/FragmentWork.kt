@@ -11,11 +11,14 @@ import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import kotlinx.android.synthetic.main.content_timer.*
 
 import mx.iteso.focusfocus.R
+import mx.iteso.focusfocus.SettingsActivity
 import mx.iteso.focusfocus.TimerExpiredReciever
 import mx.iteso.focusfocus.util.NotificationUtil
 import mx.iteso.focusfocus.util.PrefUtil
@@ -45,6 +48,7 @@ class FragmentWork : Fragment() {
     private lateinit var fab_play: FloatingActionButton
     private lateinit var fab_pause: FloatingActionButton
     private lateinit var fab_stop: FloatingActionButton
+    private lateinit var btn_new_activity : Button
 
     private var timerType = 0
 
@@ -281,5 +285,9 @@ class FragmentWork : Fragment() {
 
         val nowSeconds:Long
             get() = Calendar.getInstance().timeInMillis/1000
+
     }
+
+
+
 } // Required empty public constructor
