@@ -50,7 +50,6 @@ class FragmentWork : Fragment() {
     private lateinit var fab_play: FloatingActionButton
     private lateinit var fab_pause: FloatingActionButton
     private lateinit var fab_stop: FloatingActionButton
-    private lateinit var toolbar: Toolbar
 
 
     private lateinit var cycle1 : MenuItem
