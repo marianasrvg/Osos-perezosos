@@ -55,7 +55,6 @@ class FragmentWork : Fragment() {
 
     private var cycles : Int = 1
 
-
     private var timerType = 0
 
     //El tiempo que va a durar se asigna en el return de Util->PrefUtil->getTimerLength()
@@ -151,6 +150,7 @@ class FragmentWork : Fragment() {
     }
 
     private fun onTimerFinished () {
+        updateCycles()
         timerState = TimerState.Stopped
         if ( timerType == 0 ) {
             setNewRestTimerLength()
@@ -169,13 +169,19 @@ class FragmentWork : Fragment() {
     }
 
     private fun onStopTimer () { //restart de rest time
+        updateCycles()
         timerState = TimerState.Stopped
-        setNewTimerLength()
+        if ( timerType == 0 ) {
+            setNewRestTimerLength()
+            timerType = 1
+        } else {
+            setNewTimerLength()
+            timerType = 0
+        }
         content_timer_progress_countdown.progress = 0
         PrefUtil.setSecondsRemaining(timerLengthSeconds, this.context)
         secondsRemaining = timerLengthSeconds
         updateButtons()
-        updateCycles()
         updateCountdownUI()
     }
 
@@ -308,21 +314,29 @@ class FragmentWork : Fragment() {
     }
 
     private fun updateCycles(){
-
-        when(cycles){
-            1 -> cycle1.setVisible(true)
-            2 -> cycle2.setVisible(true)
-            3 -> cycle3.setVisible(true)
-            4 -> cycle4.setVisible(true)
-            else -> {
-                cycles = 0
-                cycle1.setVisible(false)
-                cycle2.setVisible(false)
-                cycle3.setVisible(false)
-                cycle4.setVisible(false)
+        if (timerType == 0) {
+            when (cycles) {
+                1 -> cycle1.setVisible(true)
+                2 -> cycle2.setVisible(true)
+                3 -> cycle3.setVisible(true)
+                4 -> cycle4.setVisible(true)
+                else -> {
+                    cycles = 0
+                    cycle1.setVisible(false)
+                    cycle2.setVisible(false)
+                    cycle3.setVisible(false)
+                    cycle4.setVisible(false)
+                }
             }
+            cycles++
         }
-        cycles++
+        else if(cycles == 5){
+            cycle1.setVisible(false)
+            cycle2.setVisible(false)
+            cycle3.setVisible(false)
+            cycle4.setVisible(false)
+            cycles = 1
+        }
     }
 
 } // Required empty public constructor
