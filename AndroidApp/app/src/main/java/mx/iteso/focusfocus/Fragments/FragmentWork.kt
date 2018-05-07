@@ -46,6 +46,7 @@ class FragmentWork : Fragment() {
     private lateinit var cycle3 : MenuItem
     private lateinit var cycle4 : MenuItem
 
+    private var cycles : Int = 1
 
 
     private var timerType = 0
@@ -144,6 +145,7 @@ class FragmentWork : Fragment() {
 
         updateButtons()
         updateCountdownUI()
+        updateCycles()
     }
 
     private fun onStopTimer () { //restart de rest time
@@ -153,6 +155,7 @@ class FragmentWork : Fragment() {
         PrefUtil.setSecondsRemaining(timerLengthSeconds, this.context)
         secondsRemaining = timerLengthSeconds
         updateButtons()
+        updateCycles()
         updateCountdownUI()
     }
 
@@ -207,6 +210,7 @@ class FragmentWork : Fragment() {
                 fab_play.isEnabled = true
                 fab_pause.isEnabled = false
                 fab_stop.isEnabled = false
+
             }
             TimerState.Paused -> {
                 fab_play.isEnabled = true
@@ -253,8 +257,30 @@ class FragmentWork : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         compatActivity.menuInflater.inflate(R.menu.menu_timer_cycle, menu)
         cycle1 = menu!!.getItem(0)
+        cycle2 =  menu!!.getItem(1)
+        cycle3 = menu!!.getItem(2)
+        cycle4 = menu!!.getItem(3)
+
 
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun updateCycles(){
+
+        when(cycles){
+            1 -> cycle1.setVisible(true)
+            2 -> cycle2.setVisible(true)
+            3 -> cycle3.setVisible(true)
+            4 -> cycle4.setVisible(true)
+            else -> {
+                cycles = 0
+                cycle1.setVisible(false)
+                cycle2.setVisible(false)
+                cycle3.setVisible(false)
+                cycle4.setVisible(false)
+            }
+        }
+        cycles++
     }
 
 } // Required empty public constructor

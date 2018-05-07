@@ -5,21 +5,25 @@
         android:id="@+id/cycle1"
         android:icon="@drawable/ic_cycle"
         app:showAsAction="always"
+        android:visible="false"
         android:title="" />
     <!-- "Mark Favorite", should appear as action button if possible -->
     <item
         android:id="@+id/cycle2"
         android:icon="@drawable/ic_cycle"
         app:showAsAction="always"
+        android:visible="false"
         android:title="" />
     <item
         android:id="@+id/cycle3"
         android:icon="@drawable/ic_cycle"
         app:showAsAction="always"
+        android:visible="false"
         android:title="" />
     <item
         android:id="@+id/cycle4"
         android:icon="@drawable/ic_cycle"
         app:showAsAction="always"
+        android:visible="false"
         android:title="" />
 </menu>
