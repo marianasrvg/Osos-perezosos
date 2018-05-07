@@ -12,4 +12,5 @@
         android:icon="@drawable/ic_check_black_24dp"
         android:title="@string/action_accept"
         app:showAsAction="ifRoom"/>
+
 </menu>

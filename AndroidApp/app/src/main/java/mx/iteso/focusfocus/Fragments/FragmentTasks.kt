@@ -56,6 +56,8 @@ class FragmentTasks : Fragment(), PopupMenu.OnMenuItemClickListener {
         toolbar = view.findViewById(R.id.toolbar)
         compatActivity = activity as AppCompatActivity
         compatActivity.setSupportActionBar(toolbar)
+        compatActivity.supportActionBar?.setIcon(R.drawable.ic_task)
+        compatActivity.supportActionBar?.title = "      Task"
         pagerAdapter = AdapterPagerTask(activity.supportFragmentManager, activity)
         viewPager.adapter = pagerAdapter
         viewPager.currentItem = pagerAdapter.count / 2
