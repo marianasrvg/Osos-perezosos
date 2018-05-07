@@ -1,7 +1,6 @@
 package mx.iteso.focusfocus.util
 
 import android.content.Context
-import android.preference.Preference
 import android.preference.PreferenceManager
 import mx.iteso.focusfocus.Fragments.FragmentWork
 
@@ -10,7 +9,7 @@ class PrefUtil {
     companion object {
 
         fun getTimerLength(context: Context): Int {
-            return 25;
+            return 1
         }
 
         private const val PREVIOUS_TIMER_LENGTH_SECONDS_ID = "mx.iteso.focusfocus.timer.previous_timer_length_seconds"
@@ -51,6 +50,19 @@ class PrefUtil {
         fun setSecondsRemaining (seconds: Long, context: Context) {
             val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
             editor.putLong(SECONDS_REMAINING_ID, seconds)
+            editor.apply()
+        }
+
+        private const val ALARM_SET_TIME_ID ="mx.iteso.focusfocus.timer.backgrounded_time"
+
+        fun getAlarmSetTime(context: Context): Long{
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            return preferences.getLong(ALARM_SET_TIME_ID,0)
+        }
+
+        fun setAlarmSetTime(time: Long, context: Context){
+            val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+            editor.putLong(ALARM_SET_TIME_ID, time)
             editor.apply()
         }
     }
