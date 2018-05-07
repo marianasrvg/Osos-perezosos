@@ -13,7 +13,7 @@ import kotlin.collections.ArrayList
  */
 class ControlTask {
 
-    fun addTask(task: Task, dh: DataBaseHandler): Long {
+    fun addTask(task: Task, dh: DataBaseHandler): Int {
         var inserted: Long = 0
         var db = dh.writableDatabase
         var values = ContentValues()
@@ -21,8 +21,8 @@ class ControlTask {
         values.put(DataBaseHandler.KEY_TASK_TITLE, task.title)
         values.put(DataBaseHandler.KEY_TASK_DATE, task.date.time)
         values.put(DataBaseHandler.KEY_TASK_ESTIMATED_TIME, task.estimatedDate.time)
-        values.put(DataBaseHandler.KEY_TASK_STATUS, task.status.name)
-        values.put(DataBaseHandler.KEY_TASK_PRIORITY, task.priority.name)
+        values.put(DataBaseHandler.KEY_TASK_STATUS, task.status!!.name)
+        values.put(DataBaseHandler.KEY_TASK_PRIORITY, task.priority!!.name)
         values.put(DataBaseHandler.KEY_TASK_DESCRIPTION, task.description)
         values.put(DataBaseHandler.KEY_TASK_COLOR, task.color)
 
@@ -35,7 +35,7 @@ class ControlTask {
         }
 
         db = null
-        return inserted
+        return inserted.toInt()
     }
 
     fun getTaskByStatus(status: Status, dh: DataBaseHandler): ArrayList<Task> {
@@ -95,5 +95,46 @@ class ControlTask {
 
         db = null
         return count
+    }
+
+    fun removeTask(task: Task, dh: DataBaseHandler): Int {
+        val deleted: Long = 0
+        var db = dh.writableDatabase
+        val values = ContentValues()
+        val cout = db!!.delete(DataBaseHandler.TABLE_TASK,
+                DataBaseHandler.KEY_TASK_ID + " = ?",
+                Array<String>(1) { task.id.toString() })
+
+        try {
+            db.close()
+        } catch (e: Exception) {
+        }
+
+        db = null
+        return cout
+    }
+
+    fun updateTask(id: Int, task: Task, dh: DataBaseHandler): Long {
+        var db = dh.writableDatabase
+        val values = ContentValues()
+
+        values.put(DataBaseHandler.KEY_TASK_TITLE, task.title)
+        values.put(DataBaseHandler.KEY_TASK_DATE, task.date.time)
+        values.put(DataBaseHandler.KEY_TASK_ESTIMATED_TIME, task.estimatedDate.time)
+        values.put(DataBaseHandler.KEY_TASK_STATUS, task.status!!.name)
+        values.put(DataBaseHandler.KEY_TASK_PRIORITY, task.priority!!.name)
+        values.put(DataBaseHandler.KEY_TASK_DESCRIPTION, task.description)
+        values.put(DataBaseHandler.KEY_TASK_COLOR, task.color)
+
+        val count = db.update(DataBaseHandler.TABLE_TASK, values,
+                DataBaseHandler.KEY_TASK_ID + " = ?",
+                Array<String>(1) { id.toString() })
+
+        try {
+            db.close()
+        } catch (e: Exception) {
+        }
+
+        return count.toLong()
     }
 }

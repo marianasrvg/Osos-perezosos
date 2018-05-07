@@ -42,9 +42,11 @@ class FragmentWork : Fragment() {
     private var timerLengthSeconds = 0L
     private var timerState = TimerState.Stopped
     private var secondsRemaining = 0L
-    private lateinit var fab_play : FloatingActionButton
-    private lateinit var fab_pause : FloatingActionButton
-    private lateinit var fab_stop : FloatingActionButton
+    private lateinit var fab_play: FloatingActionButton
+    private lateinit var fab_pause: FloatingActionButton
+    private lateinit var fab_stop: FloatingActionButton
+
+    private var timerType = 0
 
     //El tiempo que va a durar se asigna en el return de Util->PrefUtil->getTimerLength()
 
@@ -53,9 +55,9 @@ class FragmentWork : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_fragment_work, container, false)
@@ -68,11 +70,11 @@ class FragmentWork : Fragment() {
 
         fab_play.setOnClickListener { v ->
             startTimer()
-            timerState = TimerState.Running;
+            timerState = TimerState.Running
             updateButtons()
         }
 
-        fab_pause.setOnClickListener{ v ->
+        fab_pause.setOnClickListener { v ->
             timer.cancel()
             timerState = TimerState.Paused
             updateButtons()
@@ -80,7 +82,7 @@ class FragmentWork : Fragment() {
 
         fab_stop.setOnClickListener { v ->
             timer.cancel()
-            onTimerFinished()
+            onStopTimer()
         }
         return view
     }
@@ -96,7 +98,7 @@ class FragmentWork : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        if (timerState == TimerState.Running){
+        if (timerState == TimerState.Running) {
             timer.cancel()
             val stopTime = setAlarm(this.context, nowSeconds, secondsRemaining)
             NotificationUtil.showTimerRunning(this.context, stopTime)
@@ -105,7 +107,7 @@ class FragmentWork : Fragment() {
         }
 
         PrefUtil.setPreviousTimerLengthSeconds(timerLengthSeconds, this.context)
-        PrefUtil.setSecondsRemaining(secondsRemaining,this.context)
+        PrefUtil.setSecondsRemaining(secondsRemaining, this.context)
         PrefUtil.setTimerState(timerState, this.context)
     }
 
@@ -136,19 +138,33 @@ class FragmentWork : Fragment() {
 
         updateButtons()
         updateCountdownUI()
-
     }
 
     private fun onTimerFinished () {
         timerState = TimerState.Stopped
-        setNewTimerLength()
+        if ( timerType == 0 ) {
+            setNewRestTimerLength()
+            timerType = 1
+        } else {
+            setNewTimerLength()
+            timerType = 0
+        }
         content_timer_progress_countdown.progress = 0
         PrefUtil.setSecondsRemaining(timerLengthSeconds, this.context)
         secondsRemaining = timerLengthSeconds
 
         updateButtons()
         updateCountdownUI()
+    }
 
+    private fun onStopTimer () { //restart de rest time
+        timerState = TimerState.Stopped
+        setNewTimerLength()
+        content_timer_progress_countdown.progress = 0
+        PrefUtil.setSecondsRemaining(timerLengthSeconds, this.context)
+        secondsRemaining = timerLengthSeconds
+        updateButtons()
+        updateCountdownUI()
     }
 
     private fun startTimer() {
@@ -169,12 +185,18 @@ class FragmentWork : Fragment() {
         content_timer_progress_countdown.max = timerLengthSeconds.toInt()
     }
 
-    private fun setPreviousTimerLength(){
+    private fun setNewRestTimerLength() {
+        val lengthInMinutes = PrefUtil.getRestTimerLength(this.context)
+        timerLengthSeconds = (lengthInMinutes * 60L)
+        content_timer_progress_countdown.max = timerLengthSeconds.toInt()
+    }
+
+    private fun setPreviousTimerLength() {
         timerLengthSeconds = PrefUtil.getPreviousTimerLengthSeconds(this.context)
         content_timer_progress_countdown.max = timerLengthSeconds.toInt()
     }
 
-    private fun updateCountdownUI(){
+    private fun updateCountdownUI() {
         val minutesUntilFinished = secondsRemaining / 60
         val secondsInMinuteUntilFinished = secondsRemaining - minutesUntilFinished * 60
         val secondsStr = secondsInMinuteUntilFinished.toString()
@@ -186,21 +208,21 @@ class FragmentWork : Fragment() {
     }
 
     private fun updateButtons () {
-        when(timerState) {
+        when (timerState) {
             TimerState.Running -> {
-                fab_play.isEnabled    = false
-                fab_pause.isEnabled   = true
-                fab_stop.isEnabled    = true
+                fab_play.isEnabled = false
+                fab_pause.isEnabled = true
+                fab_stop.isEnabled = true
             }
             TimerState.Stopped -> {
-                fab_play.isEnabled    = true
-                fab_pause.isEnabled   = false
-                fab_stop.isEnabled    = false
+                fab_play.isEnabled = true
+                fab_pause.isEnabled = false
+                fab_stop.isEnabled = false
             }
             TimerState.Paused -> {
-                fab_play.isEnabled    = true
-                fab_pause.isEnabled   = false
-                fab_stop.isEnabled    = true
+                fab_play.isEnabled = true
+                fab_pause.isEnabled = false
+                fab_stop.isEnabled = true
             }
         }
     }

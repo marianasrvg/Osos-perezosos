@@ -1,7 +1,9 @@
 package mx.iteso.focusfocus.Adapters
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
@@ -23,6 +25,8 @@ import mx.iteso.focusfocus.R
 import mx.iteso.focusfocus.inflate
 import java.text.SimpleDateFormat
 import java.util.Locale
+import android.view.MenuItem
+import mx.iteso.focusfocus.ActivityAddTask
 
 /**
  * Created by Maritza on 19/03/2018.
@@ -34,7 +38,7 @@ class AdapterRecyclerTask(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterRecyclerTask.TaskHolder {
         val inflatedView = parent.inflate(R.layout.item_task, false)
-        return TaskHolder(inflatedView, context)
+        return TaskHolder(inflatedView, context, this)
     }
 
     override fun getItemCount(): Int {
@@ -56,7 +60,25 @@ class AdapterRecyclerTask(
         }
     }
 
-    class TaskHolder(v: View, val context: Context) : RecyclerView.ViewHolder(v), View.OnClickListener {
+    fun removeTaskWithId(id: Task?) {
+        task.remove(id)
+        var dh = DataBaseHandler.getInstance(context)
+        val controlTask = ControlTask()
+        if (id != null) {
+            controlTask.removeTask(id, dh)
+        }
+        notifyDataSetChanged()
+    }
+
+    fun updateTask(taskToRename: Task?) {
+        Log.d("EDIT", "long click ")
+        var intent = Intent(context, ActivityAddTask::class.java)
+        intent.putExtra("TASK", taskToRename)
+        context.startActivity(intent)
+        notifyDataSetChanged()
+    }
+
+    class TaskHolder(v: View, val context: Context, adapter: AdapterRecyclerTask) : RecyclerView.ViewHolder(v), View.OnClickListener {
 
         override fun onClick(p0: View?) {
             Log.d("RecyclerView", "CLICK!")
@@ -64,9 +86,43 @@ class AdapterRecyclerTask(
 
         private var view: View = v
         private var task: Task? = null
+        private var mAdapter: AdapterRecyclerTask = adapter
 
         init {
             v.setOnClickListener(this)
+            v.setOnLongClickListener {
+                showPopUp(v)
+                true
+            }
+        }
+
+        private fun showPopUp(v: View) {
+            val popup = PopupMenu(context, v)
+            popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
+                menuItemClick(it)
+            })
+            val inflater = popup.menuInflater
+            inflater.inflate(R.menu.menu_task_popup, popup.menu)
+            popup.show()
+        }
+
+        private fun menuItemClick(it: MenuItem): Boolean {
+            return when (it.itemId) {
+                R.id.menu_task_popup_Edit -> {
+                    mAdapter.updateTask(task)
+                    true
+                }
+
+                R.id.menu_task_popup_Delete -> {
+                    Log.d("Delete", "delete")
+                    mAdapter.removeTaskWithId(task)
+                    true
+                }
+
+                else -> {
+                    false
+                }
+            }
         }
 
         companion object {
@@ -119,7 +175,7 @@ class AdapterRecyclerTask(
             }
             if (task.status == Status.DONE) view.done.isChecked = true
             else view.done.isChecked = false
-            view.subtasks.text = task.subtaskDone().toString() + "/" + task.subTask.size
+            view.subtasks.text = task.subtaskDone().toString() + "/" + task.subTask!!.size
             val myFormat = "MM/dd/yyyy" // mention the format you need
             val sdf = SimpleDateFormat(myFormat, Locale.US)
             view.date.text = sdf.format(task.date.getTime())

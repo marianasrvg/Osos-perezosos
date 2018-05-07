@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import kotlinx.android.synthetic.main.fragment_type_task.*
 import mx.iteso.focusfocus.Adapters.AdapterRecyclerTask
 import mx.iteso.focusfocus.Beans.Task
 
@@ -20,6 +22,7 @@ import mx.iteso.focusfocus.R
 class FragmentTypeTask : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var recyclerView: RecyclerView
+    private lateinit var noTask : TextView
     private lateinit var adapter: AdapterRecyclerTask
     private var data: ArrayList<Task> = ArrayList()
 
@@ -30,13 +33,22 @@ class FragmentTypeTask : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        recyclerView.adapter = adapter
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_type_task, container, false)
+        if(data.isEmpty()){
+            noTask = view.findViewById(R.id.noTask)
+            noTask.visibility = View.VISIBLE
+        }
         linearLayoutManager = LinearLayoutManager(activity)
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = linearLayoutManager
@@ -56,4 +68,4 @@ class FragmentTypeTask : Fragment() {
             return fragment
         }
     }
-} // Required empty public constructor
+}

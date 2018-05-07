@@ -11,40 +11,56 @@ data class Task(
     var id: Int?,
     var title: String,
     var color: Int,
-    var tags: ArrayList<Tag>,
+    var tags: List<Tag>,
     var date: Date,
     var estimatedDate: Date,
-    var priority: Priority,
-    var status: Status,
-    var description: String,
-    var subTask: ArrayList<SubTask>
-) : Parcelable, Comparable<Task> {
+    var priority: Priority?,
+    var status: Status?,
+    var description: String?,
+    var subTask: List<SubTask>?
+) : Comparable<Task>, Parcelable {
+
 
     constructor(parcel: Parcel) : this(
             parcel.readValue(Int::class.java.classLoader) as? Int,
             parcel.readString(),
             parcel.readInt(),
-            TODO("tags"),
-            TODO("date"),
-            TODO("estimatedDate"),
-            TODO("priority"),
-            TODO("status"),
+            parcel.createTypedArrayList(Tag),
+            Date(parcel.readLong()),
+            Date(parcel.readLong()),
+            parcel.readParcelable(Priority::class.java.classLoader),
+            parcel.readParcelable(Status::class.java.classLoader),
             parcel.readString(),
-            TODO("subTask")) {
+            parcel.createTypedArrayList(SubTask)) {
     }
+
     fun subtaskDone(): Int {
         var dones: Int = 0
-        for (item: SubTask in subTask) {
+        for (item: SubTask in this!!.subTask!!) {
             if (item.done) dones++
         }
         return dones
+    }
+
+    override fun compareTo(other: Task): Int {
+        if (other.date == this.date) {
+            return other.priority!!.compareTo(this.priority!!)
+        } else {
+            return other.date.compareTo(this.date)
+        }
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)
         parcel.writeString(title)
         parcel.writeInt(color)
+        parcel.writeTypedList(tags)
+        parcel.writeLong(date.time)
+        parcel.writeLong(estimatedDate.time)
+        parcel.writeParcelable(priority, flags)
+        parcel.writeParcelable(status, flags)
         parcel.writeString(description)
+        parcel.writeTypedList(subTask)
     }
 
     override fun describeContents(): Int {
@@ -61,11 +77,4 @@ data class Task(
         }
     }
 
-    override fun compareTo(other: Task): Int {
-        if (other.date == this.date) {
-            return other.priority.compareTo(this.priority)
-        } else {
-            return other.date.compareTo(this.date)
-        }
-    }
 }
