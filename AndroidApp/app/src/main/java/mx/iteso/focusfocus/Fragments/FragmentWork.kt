@@ -10,12 +10,12 @@ import android.os.CountDownTimer
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.Toolbar
+import android.view.*
 import android.widget.Button
+import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.content_timer.*
+import kotlinx.android.synthetic.main.fragment_fragment_work.*
 
 import mx.iteso.focusfocus.R
 import mx.iteso.focusfocus.SettingsActivity
@@ -40,6 +40,7 @@ class FragmentWork : Fragment() {
     }
 
     private var mListener: OnFragmentInteractionListener? = null
+    private lateinit var toolbar_work: Toolbar
     private lateinit var compatActivity: AppCompatActivity
     private lateinit var timer: CountDownTimer
     private var timerLengthSeconds = 0L
@@ -48,7 +49,6 @@ class FragmentWork : Fragment() {
     private lateinit var fab_play: FloatingActionButton
     private lateinit var fab_pause: FloatingActionButton
     private lateinit var fab_stop: FloatingActionButton
-    private lateinit var btn_new_activity : Button
 
     private var timerType = 0
 
@@ -56,6 +56,8 @@ class FragmentWork : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
     }
 
     override fun onCreateView(
@@ -65,13 +67,15 @@ class FragmentWork : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_fragment_work, container, false)
+        toolbar_work = view.findViewById(R.id.toolbar_work)
+        compatActivity = activity as AppCompatActivity
+        compatActivity.setSupportActionBar(toolbar_work)
         compatActivity = activity as AppCompatActivity
         compatActivity.supportActionBar?.setIcon(R.drawable.ic_timer)
         compatActivity.supportActionBar?.title = "      Timer"
         fab_play = view.findViewById(R.id.fragment_work_fab_play)
         fab_pause = view.findViewById(R.id.fragment_work_fab_pause)
         fab_stop = view.findViewById(R.id.fragment_work_fab_stop)
-
         fab_play.setOnClickListener { v ->
             startTimer()
             timerState = TimerState.Running
@@ -288,6 +292,24 @@ class FragmentWork : Fragment() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        compatActivity.menuInflater.inflate(R.menu.menu_timer, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                val intent = Intent(this.context, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
 
 } // Required empty public constructor
