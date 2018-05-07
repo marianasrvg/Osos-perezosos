@@ -7,8 +7,10 @@ import mx.iteso.focusfocus.Fragments.FragmentWork
 class PrefUtil {
     companion object {
 
+        private const val TIMER_LENGTH_ID="com.mx.iteso.focusfocus.timer.timer_length"
         fun getTimerLength(context: Context): Int {
-            return 2
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            return preferences.getInt(TIMER_LENGTH_ID, 25)
         }
 
         fun getRestTimerLength(context: Context): Int {

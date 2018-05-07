@@ -13,9 +13,13 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.*
+import android.widget.Button
+import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.content_timer.*
+import kotlinx.android.synthetic.main.fragment_fragment_work.*
 
 import mx.iteso.focusfocus.R
+import mx.iteso.focusfocus.SettingsActivity
 import mx.iteso.focusfocus.TimerExpiredReciever
 import mx.iteso.focusfocus.util.NotificationUtil
 import mx.iteso.focusfocus.util.PrefUtil
@@ -37,6 +41,7 @@ class FragmentWork : Fragment() {
     }
 
     private var mListener: OnFragmentInteractionListener? = null
+    private lateinit var toolbar_work: Toolbar
     private lateinit var compatActivity: AppCompatActivity
     private lateinit var timer: CountDownTimer
     private var timerLengthSeconds = 0L
@@ -71,12 +76,17 @@ class FragmentWork : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_fragment_work, container, false)
+
+        toolbar_work = view.findViewById(R.id.toolbar_work)
+        compatActivity = activity as AppCompatActivity
+        compatActivity.setSupportActionBar(toolbar_work)
+        compatActivity = activity as AppCompatActivity
+        compatActivity.supportActionBar?.setIcon(R.drawable.ic_timer)
+        compatActivity.supportActionBar?.title = "      Timer"
         fab_play = view.findViewById(R.id.fragment_work_fab_play)
         fab_pause = view.findViewById(R.id.fragment_work_fab_pause)
         fab_stop = view.findViewById(R.id.fragment_work_fab_stop)
-        toolbar = view.findViewById(R.id.toolbar_work)
-        compatActivity = activity as AppCompatActivity
-        compatActivity.setSupportActionBar(toolbar)
+      
         fab_play.setOnClickListener { v ->
             startTimer()
             timerState = TimerState.Running
@@ -300,6 +310,21 @@ class FragmentWork : Fragment() {
 
         val nowSeconds:Long
             get() = Calendar.getInstance().timeInMillis/1000
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                val intent = Intent(this.context, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -308,7 +333,6 @@ class FragmentWork : Fragment() {
         cycle2 =  menu!!.getItem(1)
         cycle3 = menu!!.getItem(2)
         cycle4 = menu!!.getItem(3)
-
 
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -338,5 +362,4 @@ class FragmentWork : Fragment() {
             cycles = 1
         }
     }
-
 } // Required empty public constructor
