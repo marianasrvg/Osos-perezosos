@@ -1,6 +1,9 @@
 package mx.iteso.focusfocus.Fragments
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
@@ -13,7 +16,10 @@ import android.view.*
 import kotlinx.android.synthetic.main.content_timer.*
 
 import mx.iteso.focusfocus.R
+import mx.iteso.focusfocus.TimerExpiredReciever
+import mx.iteso.focusfocus.util.NotificationUtil
 import mx.iteso.focusfocus.util.PrefUtil
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -24,6 +30,7 @@ import mx.iteso.focusfocus.util.PrefUtil
  * create an instance of this fragment.
  */
 class FragmentWork : Fragment() {
+
 
     enum class TimerState {
         Stopped, Paused, Running
@@ -94,14 +101,19 @@ class FragmentWork : Fragment() {
         super.onResume()
 
         initTimer()
+
+        removeAlarm(this.context)
+        NotificationUtil.hideTimerNotification(context)
     }
 
     override fun onPause() {
         super.onPause()
         if (timerState == TimerState.Running) {
             timer.cancel()
+            val stopTime = setAlarm(this.context, nowSeconds, secondsRemaining)
+            NotificationUtil.showTimerRunning(this.context, stopTime)
         } else if (timerState == TimerState.Paused) {
-            //TODO: show notification
+            NotificationUtil.showTimerPaused(context)
         }
 
         PrefUtil.setPreviousTimerLengthSeconds(timerLengthSeconds, this.context)
@@ -111,6 +123,8 @@ class FragmentWork : Fragment() {
 
     private fun initTimer() {
         timerState = PrefUtil.getTimerState(this.context)
+
+        setNewTimerLength()
 
         if (timerState == TimerState.Stopped)
             setNewTimerLength()
@@ -123,7 +137,13 @@ class FragmentWork : Fragment() {
         else
             secondsRemaining = timerLengthSeconds
 
-        if (timerState == TimerState.Running)
+        val alarmSetTime = PrefUtil.getAlarmSetTime(this.context)
+        if(alarmSetTime > 0)
+            secondsRemaining -= nowSeconds - alarmSetTime
+
+        if(secondsRemaining<=0)
+            onTimerFinished()
+        else if (timerState == TimerState.Running)
             startTimer ()
 
         updateButtons()
@@ -248,10 +268,32 @@ class FragmentWork : Fragment() {
     }
 
     companion object {
+
         fun newInstance(): FragmentWork {
             val fragment = FragmentWork()
             return fragment
         }
+
+        fun setAlarm(context: Context, nowSeconds: Long, secondsRemaining:Long):Long{
+            val endTime = (nowSeconds + secondsRemaining) * 1000;
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(context, TimerExpiredReciever::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, endTime, pendingIntent)
+            PrefUtil.setAlarmSetTime(nowSeconds, context)
+            return endTime
+        }
+
+        fun removeAlarm(context: Context){
+            val intent = Intent(context, TimerExpiredReciever::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager.cancel(pendingIntent)
+            PrefUtil.setAlarmSetTime(0, context)
+        }
+
+        val nowSeconds:Long
+            get() = Calendar.getInstance().timeInMillis/1000
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
