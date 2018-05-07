@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="mx.iteso.focusfocus.Fragments.FragmentTasks">
 
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_work"
         android:layout_width="match_parent"
@@ -21,6 +22,7 @@
     </android.support.design.widget.TabLayout>
 
     <include layout="@layout/content_timer"/>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fragment_work_fab_stop"

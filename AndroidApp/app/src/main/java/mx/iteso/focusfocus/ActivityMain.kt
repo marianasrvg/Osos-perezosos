@@ -1,13 +1,18 @@
 package mx.iteso.focusfocus
 
+import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.transition.Fade
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toolbar
+import kotlinx.android.synthetic.main.activity_add_task.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_fragment_work.*
 import mx.iteso.focusfocus.Fragments.FragmentStats
 import mx.iteso.focusfocus.Fragments.FragmentTasks
 import mx.iteso.focusfocus.Fragments.FragmentWork
@@ -27,6 +32,8 @@ class ActivityMain : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initUIElements()
+        setSupportActionBar(toolbar_work)
+        /*setSupportActionBar(toolbar_settings)*/
     }
 
     private fun initUIElements() {
@@ -80,4 +87,5 @@ class ActivityMain : AppCompatActivity(),
         bottomNav.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         navigationBar.selectedItemId = R.id.navBAction
     }
+
 }
