@@ -4,10 +4,12 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.support.design.R.attr.theme
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -58,6 +60,7 @@ class FragmentWork : Fragment() {
     private lateinit var cycle4 : MenuItem
 
     private var cycles : Int = 1
+    private var sessions: Int = 0
 
     private var timerType = 0
 
@@ -354,6 +357,14 @@ class FragmentWork : Fragment() {
             cycles++
         }
         else if(cycles == 5){
+            if(sessions == 1) {
+                activity.setTheme(R.style.AppTheme2)
+                val ft = fragmentManager.beginTransaction()
+                ft.detach(this).attach(this).commit()
+            }
+            else{
+                sessions++
+            }
             cycle1.setVisible(false)
             cycle2.setVisible(false)
             cycle3.setVisible(false)
@@ -362,3 +373,4 @@ class FragmentWork : Fragment() {
         }
     }
 } // Required empty public constructor
+
